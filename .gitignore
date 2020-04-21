@@ -128,10 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+# Adding sublime files
 .DS_Store
 *.sublime-workspace
 *.sublime-project
 *.egg-info/
-env/
-.python-version
