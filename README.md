@@ -41,12 +41,12 @@ Parameters:
 ```python
 get_form_data(form_id, format=’csv’, shape=’wide’, date=None, review_status='approved', repeat_groups=None, line_breaks=None)
 ```
-Fetch SurveyCTO form data in json or csv formats
+Fetch SurveyCTO form data in json or csv formats.
 Parameters
 - form_id (str): The form_id of the SurveyCTO form.
 - format (str, optional): The format of the returned data. Allowed values are: json, csv(default).
 - shape (str, optional): The shape of the returned data. Allowed values are: wide, long. shape=’long’ can only be specified when returning data in csv format.
-- date (str, optional): Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
+- date (datetime.date or datetime.datetime object, optional): Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
 - review_status (str, optional): Return only the form submissions with given review status. Allowed values are: approved(default), rejected, pending and more than one value concatenated with | or with commas.
 - repeat_groups (bool, optional): Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
 - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
@@ -54,7 +54,7 @@ Parameters
 ```python
 get_repeatgroup(form_id, repeat_group_name, review_status='approved', line_breaks=None)
 ```
-Fetch SurveyCTO form's repeatgroup data
+Fetch SurveyCTO form's repeatgroup data.
 Parameters
 - form_id (str): The form_id of the SurveyCTO form.
 - repeat_group_name (str): Form's repeat group name.
@@ -64,9 +64,9 @@ Parameters
 ```python
 get_server_dataset(dataset_id, line_breaks=None)
 ```
-Fetch SurveyCTO server dataset data
+Fetch SurveyCTO server dataset data.
 Parameters
-- dataset_id (str): The server dataset id of the SurveyCTO dataset
+- dataset_id (str): The server dataset id of the SurveyCTO dataset.
 - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
 
 ```python
@@ -85,11 +85,6 @@ Parameters
 get_form_data(form_id)
 ```
 
-- Get a wide json
-```python
-get_form_data(form_id, format=’json’)
-```
-
 - Get a long csv with repeat groups
 ```python
 get_form_data(form_id, shape=’long’)
@@ -100,10 +95,26 @@ get_form_data(form_id, shape=’long’)
 get_form_data(form_id, shape=’long’, repeat_groups=false)
 ```
 
+- Get a wide csv with linebreaks replaced with space 
+```python
+get_form_data(form_id, line_breaks=' ')
+```
+
+- Get a wide csv with only pending-review submissions
+```python
+get_form_data(form_id, review_status=' pending')
+```
+
+- Get a wide json
+```python
+get_form_data(form_id, format=’json’)
+```
+
 - Get a wide json starting after a given CompletionDate
 ```python
 get_form_data(form_id, format=’json’, date=my_datetime)
 ```
+
 
 
 <a name="license"></a>
