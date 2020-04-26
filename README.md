@@ -85,22 +85,22 @@ Parameters
 get_form_data(form_id)
 ```
 
-# Get a wide json
+- Get a wide json
 ```python
 get_form_data(form_id, format=’json’)
 ```
 
-# Get a long csv with repeat groups
+- Get a long csv with repeat groups
 ```python
 get_form_data(form_id, shape=’long’)
 ```
 
-# Get a long csv without repeat groups
+- Get a long csv without repeat groups
 ```python
 get_form_data(form_id, shape=’long’, repeat_groups=false)
 ```
 
-# Get a wide json starting after a given CompletionDate
+- Get a wide json starting after a given CompletionDate
 ```python
 get_form_data(form_id, format=’json’, date=my_datetime)
 ```
