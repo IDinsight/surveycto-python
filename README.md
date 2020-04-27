@@ -39,7 +39,7 @@ Parameters:
 - keyfile (str, optional)
 
 ```python
-get_form_data(form_id, format=’csv’, shape=’wide’, date=None, review_status='approved', repeat_groups=None, line_breaks=None)
+get_form_data(form_id, format=’csv’, shape=’wide’, date=None, review_status='approved', repeat_groups=None, line_breaks=None, keyfile=False)
 ```
 Fetch SurveyCTO form data in json or csv formats.
 Parameters
@@ -47,9 +47,10 @@ Parameters
 - format (str, optional): The format of the returned data. Allowed values are: json, csv(default).
 - shape (str, optional): The shape of the returned data. Allowed values are: wide, long. shape=’long’ can only be specified when returning data in csv format.
 - date (datetime.date or datetime.datetime object, optional): Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
-- review_status (str, optional): Return only the form submissions with given review status. Allowed values are: approved(default), rejected, pending and more than one value concatenated with | or with commas.
+- review_status (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending.
 - repeat_groups (bool, optional): Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
 - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
+- keyfile(str, optional): The private key to decrypt form data. This can be used only for json extracts without review_status parameter.
 
 ```python
 get_repeatgroup(form_id, repeat_group_name, review_status='approved', line_breaks=None)
