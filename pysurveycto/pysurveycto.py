@@ -9,7 +9,7 @@ class IllegalArgumentError(ValueError):
 
 class SurveyCTOObject(object):
     """
-            Object to initialize and interact with a SurveyCTO server
+        Object to initialize and interact with a SurveyCTO server
     """
 
     def __init__(self,
@@ -21,7 +21,6 @@ class SurveyCTOObject(object):
             :param server_name (str): SurveyCTO server name
             :param username (str): SurveyCTO login username
             :param password (str): SurveyCTO login password
-            :param keyfile (str, optional)
 
         """
 
@@ -78,13 +77,11 @@ class SurveyCTOObject(object):
                     response = requests.delete(
                         v_settings, headers=self.default_headers, auth=self.auth_disgest)
                     response.raise_for_status()
-
                 except Exception as e:
-
                     response = False
                     raise ValueError(e)
 
-        # Extract using basic authentication as per SCTO 2.70 update
+        # Extract using basic authentication as per SurveyCTO 2.70 update
         try:
             if keyfile is False:
                 response = requests.get(
@@ -97,6 +94,7 @@ class SurveyCTOObject(object):
             response.raise_for_status()
 
         except Exception as e:
+            # Try digest authentication which works for old SurveyCTO versions
             try:
                 if keyfile is False:
                     response = requests.get(
@@ -129,35 +127,37 @@ class SurveyCTOObject(object):
             Fetch SurveyCTO form data in json or csv formats.
             :param form_id (str): The form_id of the SurveyCTO form.
             :param format (str, optional): The format of the returned data. Allowed values are: json, csv(default).
-            :param shape (str, optional): The shape of the returned data. Allowed values are: wide, long. 
+            :param shape (str, optional): The shape of the returned data. Allowed values are: wide(default), long. 
             	   shape=’long’ can only be specified when returning data in csv format.
             :param date (datetime.date or datetime.datetime object, optional): Return only the form submissions where 
             		CompletionDate is greater than the given date (in UTC). Can only be specified when returning data 
             		in json format.
             :param review_status (list, optional): Return only the form submissions with given review status. Allowed 
-            		values in the list are: approved(default), rejected, pending.
+            		values in the list are: approved(default), rejected, pending. This option is only applicable for 
+                    forms using the “Review and Corrections” workflow on the SurveyCTO web console.
             :param repeat_groups (bool, optional): Return a dictionary object containing the main form data along 
             		with the repeat groups. Can only be specified when returning long data, in which case it will 
             		default to true.
             :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
-            :param keyfile(str, optional): The private key to decrypt form data. This can be used only for json extracts
-                    without review_status parameter.
+            :param keyfile(str, optional): The private key to decrypt form data. This can only be specified when returning
+                    data in json format without review_status parameter.
         """
 
         if (format == 'csv'):
 
-            # check params
             if review_status is None:
                 review_status = ['approved']
             #review_status_arr = review_status.replace('|', ',').split(',')
 
+            # Check params - review status is of list type
             if not isinstance(review_status, list):
                 raise TypeError(
-                        "Review status argument must be a list.")
+                        "review_status parameter is expected to be a list.")
 
             url_review_status = ""
             url_review_count = 0
             for status in review_status:
+                # Check params - review_status allowed values are approved(default), rejected, pending
                 if (status not in ['approved', 'pending', 'rejected']):
                     raise IllegalArgumentError(
                         "Wrong value passed in review_status. Allowed values are approved, rejected and pending.")
@@ -168,27 +168,32 @@ class SurveyCTOObject(object):
                         url_review_status = url_review_status + "," + status
                     url_review_count+=1
 
+            # Check params - date not allowed in csv formats
             if (date is not None):
                 raise IllegalArgumentError(
-                    "Date can only be specified when extracting data in json format")
+                    "Date can only be specified when returning data in json format.")
 
-            if (shape not in ['long', 'wide']):
-                raise IllegalArgumentError(
-                    "Wrong value passed in shape. Allowed values are long and wide")
-
+            # Check params - keyfile not allowed in csv formats
             if keyfile is not False:
                 raise IllegalArgumentError(
-                    "Encrypted data extraction is only supported in Json format.")
+                    "Encrypted data extraction is only supported when returning data in json format.")
+
+            # Check params - shape allowed values are wide(default) and long 
+            if (shape not in ['long', 'wide']):
+                raise IllegalArgumentError(
+                    "Wrong value passed in shape. Allowed values are long and wide.")
 
             if (shape == 'wide'):
 
+                # Check params - repeat_groups not alowed in wide csv format
                 if (repeat_groups is not None):
                     raise IllegalArgumentError(
-                        "Repeat groups can only be specified when extracting data in csv long format")
+                        "Repeat groups can only be specified when returning data in csv long format.")
 
                 url = f'https://{self.server_name}.surveycto.com/api/v1/forms/data/wide/csv/{form_id}?r={url_review_status}'
                 data = (self.get_url_data(url, line_breaks, keyfile=keyfile)).text
                 return data
+
             else:
 
                 if (repeat_groups == False):
@@ -214,17 +219,20 @@ class SurveyCTOObject(object):
 
         else:
 
+            # Check params - shape not allowed in json format
             if (shape != 'wide'):
                 raise IllegalArgumentError(
-                    "Shape can only be specified when extracting data in csv format")
+                    "Shape can only be specified when returning data in csv format.")
 
+            # Check params - repeat_groups not allowed in json format
             if (repeat_groups is not None):
                 raise IllegalArgumentError(
-                    "Repeat groups can only be specified when extracting data in csv long format")
+                    "Repeat groups can only be specified when returning data in csv format.")
 
+            # Check params - line_breaks not allowed in json format
             if (line_breaks is not None):
                 raise IllegalArgumentError(
-                    "Line breaks can only be specified when extracting data in csv format")
+                    "Line breaks can only be specified when returning data in csv format.")
 
             if ((date == 0) or (date is None)):
                 # Default to fecthing data for all dates
@@ -234,18 +242,21 @@ class SurveyCTOObject(object):
                 if review_status is not None:
                     #review_status_arr = review_status.replace('|', ',').split(',')
 
+                    # Check params - review status is of list type
                     if not isinstance(review_status, list):
                         raise TypeError(
-                                "Review status argument must be a list.")
+                                "review_status parameter is expected to be a list.")
 
+                    # Check params - keyfile not allowed in json formats with review status
                     if keyfile is not False:
                         raise IllegalArgumentError(
-                            "Encrypted data extraction is only supported in Json format without review status parameter.")
+                            "Encrypted data extraction is only supported in returning data json format without review status filter.")
 
                     url_review_status = ""
                     url_review_count = 0
                     for status in review_status:
                         if (status not in ['approved', 'pending', 'rejected']):
+                            # Check params - review_status allowed values are approved(default), rejected, pending
                             raise IllegalArgumentError(
                                 "Wrong value passed in review_status. Allowed values are approved, rejected and pending.")
                         else:
@@ -264,9 +275,10 @@ class SurveyCTOObject(object):
 
             else:
 
+                # Check params - review_status not allowed in json formats with date filter
                 if review_status is not None:
                     raise IllegalArgumentError(
-                                "Review status cannot be specified along with date parameter.")
+                                "Review status can only be specified when returning data without a date filter.")
 
                 if (isinstance(date, datetime.date) or isinstance(date, datetime.datetime)):
 
@@ -279,8 +291,9 @@ class SurveyCTOObject(object):
                         date.strftime("%b %-d, %Y %-I:%M:%S %p"))
 
                 else:
+                     # Check params - date is of datetime.date or datetime.datetime object type
                     raise TypeError(
-                        'Date argument must be a datetime.date or datetime.datetime object')
+                        'Date argument is expected to be a datetime.date or datetime.datetime object')
 
                 url = f'https://{self.server_name}.surveycto.com/api/v2/forms/data/wide/json/{form_id}?date={url_date}'
 
@@ -292,42 +305,53 @@ class SurveyCTOObject(object):
     def get_repeatgroup(self,
                         form_id,
                         repeat_group_name,
-                        review_status='approved'):
+                        review_status=None,
+                        line_breaks=None):
         """
-                Fetch SurveyCTO form's repeatgroup data.
-                :param form_id (str): The form_id of the SurveyCTO form.
-                :param repeat_group_name (str): Form's repeat group name.
-                :param review_status (str, optional): Return only the form submissions with given review status. 
-                		Allowed values are: approved(default), rejected, pending and more than one value concatenated 
-                		with | or with commas.
-                :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
+            Fetch SurveyCTO form's repeatgroup data.
+            :param form_id (str): The form_id of the SurveyCTO form.
+            :param repeat_group_name (str): Form's repeat group name.
+            :param review_status (list, optional):Return only the form submissions with given review status. Allowed 
+                    values in the list are: approved(default), rejected, pending. This option is only applicable for 
+                    forms using the “Review and Corrections” workflow on the SurveyCTO web console.
+            :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
         """
 
-        review_status_arr = review_status.replace('|', ',').split(',')
+        if not isinstance(review_status, list):
+            raise TypeError(
+                    "review_status parameter is expected to be a list.")
 
-        for status in review_status_arr:
-            if (review_status not in ['approved', 'pending', 'rejected']):
+        url_review_status = ""
+        url_review_count = 0
+        for status in review_status:
+            # Check params - review_status allowed values are approved(default), rejected, pending
+            if (status not in ['approved', 'pending', 'rejected']):
                 raise IllegalArgumentError(
                     "Wrong value passed in review_status. Allowed values are approved, rejected and pending.")
             else:
-                url_review_status = review_status
+                if (url_review_count == 0):
+                    url_review_status = url_review_status + status
+                else:
+                    url_review_status = url_review_status + "," + status
+                url_review_count+=1
 
         url = f'https://{self.server_name}.surveycto.com/api/v1/forms/data/csv/{form_id}/{repeat_group_name}?r={url_review_status}'
-        data = (self.get_url_data(url)).text
+        data = (self.get_url_data(url, line_breaks)).text
         return data
 
 
 
     def get_server_dataset(self,
-                           dataset_id):
+                           dataset_id,
+                           line_breaks=None):
         """
-                Fetch SurveyCTO server dataset data.
-                :param dataset_id (str): The server dataset id of the SurveyCTO dataset.
-                :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
+            Fetch SurveyCTO server dataset data.
+            :param dataset_id (str): The server dataset id of the SurveyCTO dataset.
+            :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
         """
 
         url = f'https://{self.server_name}.surveycto.com/api/v2/datasets/data/csv/{dataset_id}'
-        data = (self.get_url_data(url)).text
+        data = (self.get_url_data(url, line_breaks)).text
         return data
 
 
