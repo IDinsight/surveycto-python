@@ -2,7 +2,6 @@
 
 Python library to use the SurveyCTO API to download data
 
-<br><br>
 
 # Table of Contents
 
@@ -12,7 +11,6 @@ Python library to use the SurveyCTO API to download data
 * [License](#license)
 * [SCTO API Options](#apioptions)
 
-<br><br>
 
 <a name="installation"></a>
 # Installation
@@ -20,12 +18,11 @@ Python library to use the SurveyCTO API to download data
 ## Prerequisites
 
 - Python version 2.6, 2.7, 3.4, 3.5 or 3.6
-<br>
+
 ## Install Package
 ```bash
 pip install pysurveycto
 ```
-<br><br>
 
 <a name="usage"></a>
 # Usage
@@ -39,7 +36,6 @@ SurveyCTOObject(server_name, username, password)
   - username (str): SurveyCTO login username
   - password (str): SurveyCTO login password
 
-<br>
 
 ##Methods:
 
