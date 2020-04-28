@@ -54,7 +54,7 @@ SurveyCTOObject(server_name, username, password)
     - review_status (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
     - repeat_groups (bool, optional): Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
     - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
-    - keyfile(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
+    - keyfile(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.<br><br>
 
 
 *
@@ -67,7 +67,7 @@ SurveyCTOObject(server_name, username, password)
     - form_id (str): The form_id of the SurveyCTO form.
     - repeat_group_name (str): Form's repeat group name.
     - review_status (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
-    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.  
+    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.<br><br>
       
 *
   ```python
@@ -77,7 +77,7 @@ SurveyCTOObject(server_name, username, password)
 
     *Parameters:*
     - dataset_id (str): The server dataset id of the SurveyCTO dataset.
-    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.  
+    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.<br><br>
       
 *
   ```python
