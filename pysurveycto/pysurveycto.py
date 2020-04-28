@@ -1,6 +1,9 @@
 import requests
-import urllib
 import datetime
+try:
+    from urllib import quote  # Python 2.X
+except ImportError:
+    from urllib.parse import quote  # Python 3+
 
 
 class IllegalArgumentError(ValueError):
@@ -50,7 +53,7 @@ class SurveyCTOObject(object):
 
         # Change line break settings as per user parameter
         if (line_breaks is not None):
-            v_url_encoded_line_break = urllib.parse.quote(line_breaks)
+            v_url_encoded_line_break = quote(line_breaks)
             v_settings = f'''https://{self.server_name}.surveycto.com/api/v1/forms/settings/csv/linebreak?v={v_url_encoded_line_break}'''
             try:
                 response = requests.post(
@@ -287,7 +290,7 @@ class SurveyCTOObject(object):
                         date = datetime.datetime.combine(
                             date, datetime.datetime.min.time())
 
-                    url_date = urllib.parse.quote(
+                    url_date = quote(
                         date.strftime("%b %-d, %Y %-I:%M:%S %p"))
 
                 else:
