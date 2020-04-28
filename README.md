@@ -32,7 +32,7 @@ pip install pysurveycto
 ```python
 SurveyCTOObject(server_name, username, password)
 ```
-Parameters:
+*Parameters:*
 - server_name (str): SurveyCTO server name
 - username (str): SurveyCTO login username
 - password (str): SurveyCTO login password
@@ -45,6 +45,7 @@ Parameters:
   get_form_data(form_id, format=’csv’, shape=’wide’, date=None, review_status=None, repeat_groups=None, line_breaks=None, keyfile=False)
   ```
   Fetch SurveyCTO form data in json or csv formats.
+
   *Parameters*
   - form_id (str): The form_id of the SurveyCTO form.
   - format (str, optional): The format of the returned data. Allowed values are: json, csv(default).
@@ -55,31 +56,37 @@ Parameters:
   - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
   - keyfile(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
 
+
 *
   ```python
   get_repeatgroup(form_id, repeat_group_name, review_status=None, line_breaks=None)
   ```
   Fetch SurveyCTO form's repeatgroup data.
+
   *Parameters*
   - form_id (str): The form_id of the SurveyCTO form.
   - repeat_group_name (str): Form's repeat group name.
   - review_status (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
   - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
 
+
 *
   ```python
   get_server_dataset(dataset_id, line_breaks=None)
   ```
   Fetch SurveyCTO server dataset data.
+
   *Parameters*
   - dataset_id (str): The server dataset id of the SurveyCTO dataset.
   - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
+
 
 *
   ```python
   get_attachment(url)
   ```
-  Fetch form's file attachments like media/audio/images from SurveyCTO
+  Fetch form's file attachments like media/audio/images from SurveyCTO.
+
   *Parameters*
   - url (str): The URL to the attached file
 
@@ -107,14 +114,9 @@ scto = SurveyCTOObject(server_name, username, password)
   scto.get_form_data(form_id, shape=’long’, repeat_groups=false)
   ```
 
-- Get a wide csv with linebreaks replaced with space 
+- Get a wide csv with linebreaks replaced with space with only pending-review submissions
   ```python
-  scto.get_form_data(form_id, line_breaks=' ')
-  ```
-
-- Get a wide csv with only pending-review submissions
-  ```python
-  scto.get_form_data(form_id, review_status=' pending')
+  scto.get_form_data(form_id, line_breaks=' ', review_status=['pending'])
   ```
 
 - Get a wide json
@@ -122,9 +124,14 @@ scto = SurveyCTOObject(server_name, username, password)
   scto.get_form_data(form_id, format=’json’)
   ```
 
-- Get a wide json starting after a given CompletionDate
+- Get a wide json for encrypted form starting after a given CompletionDate
   ```python
-  scto.get_form_data(form_id, format=’json’, date=my_datetime)
+  scto.get_form_data(form_id, format=’json’, date=my_datetime, keyfile='<path to keyfile>')
+  ```
+
+- Get a server dataset with linebreaks replaced with space
+  ```python
+  scto.get_form_data(dataset_id, line_breaks=' ')
   ```
 
 
