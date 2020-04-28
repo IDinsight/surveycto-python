@@ -27,7 +27,7 @@ pip install pysurveycto
 <a name="usage"></a>
 # Usage
 
-##Initialize SCTO Object
+## Initialize SCTO Object
 ```python
 SurveyCTOObject(server_name, username, password)
 ```
@@ -37,13 +37,13 @@ SurveyCTOObject(server_name, username, password)
   - password (str): SurveyCTO login password
 
 
-##Methods:
+## Methods:
 
 * 
   ```python
   get_form_data(form_id, format=’csv’, shape=’wide’, date=None, review_status=None, repeat_groups=None, line_breaks=None, keyfile=False)
   ```
-    Fetch SurveyCTO form data in json or csv formats.
+  <p>Fetch SurveyCTO form data in json or csv formats.
 
     *Parameters:*
     - **form_id** (str): The form_id of the SurveyCTO form.
@@ -54,7 +54,7 @@ SurveyCTOObject(server_name, username, password)
     - **repeat_groups** (bool, optional): Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
     - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
     - **keyfile**(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
-
+  </p>
 <br><br>
 
 *
