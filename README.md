@@ -2,6 +2,7 @@
 
 Python library to use the SurveyCTO API to download data
 
+<br><br>
 
 # Table of Contents
 
@@ -11,6 +12,7 @@ Python library to use the SurveyCTO API to download data
 * [License](#license)
 * [SCTO API Options](#apioptions)
 
+<br><br>
 
 <a name="installation"></a>
 # Installation
@@ -18,17 +20,17 @@ Python library to use the SurveyCTO API to download data
 ## Prerequisites
 
 - Python version 2.6, 2.7, 3.4, 3.5 or 3.6
-
+<br>
 ## Install Package
 ```bash
 pip install pysurveycto
 ```
-
+<br><br>
 
 <a name="usage"></a>
 # Usage
 
-**Initialize SCTO Object**
+##Initialize SCTO Object
 ```python
 SurveyCTOObject(server_name, username, password)
 ```
@@ -37,8 +39,9 @@ SurveyCTOObject(server_name, username, password)
   - username (str): SurveyCTO login username
   - password (str): SurveyCTO login password
 
+<br>
 
-**Methods:**
+##Methods:
 
 * 
   ```python
@@ -47,15 +50,16 @@ SurveyCTOObject(server_name, username, password)
     Fetch SurveyCTO form data in json or csv formats.
 
     *Parameters:*
-    - form_id (str): The form_id of the SurveyCTO form.
-    - format (str, optional): The format of the returned data. Allowed values are: json, csv(default).
-    - shape (str, optional): The shape of the returned data. Allowed values are: wide(default), long. shape=’long’ can only be specified when returning data in csv format.
-    - date (datetime.date or datetime.datetime object, optional): Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
-    - review_status (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
-    - repeat_groups (bool, optional): Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
-    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
-    - keyfile(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.<br><br>
+    - **form_id** (str): The form_id of the SurveyCTO form.
+    - **format** (str, optional): The format of the returned data. Allowed values are: json, csv(default).
+    - **shape** (str, optional): The shape of the returned data. Allowed values are: wide(default), long. shape=’long’ can only be specified when returning data in csv format.
+    - **date** (datetime.date or datetime.datetime object, optional): Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
+    - **review_status** (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
+    - **repeat_groups** (bool, optional): Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
+    - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
+    - **keyfile**(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
 
+<br><br>
 
 *
   ```python
@@ -64,10 +68,12 @@ SurveyCTOObject(server_name, username, password)
     Fetch SurveyCTO form's repeatgroup data.
 
     *Parameters:*
-    - form_id (str): The form_id of the SurveyCTO form.
-    - repeat_group_name (str): Form's repeat group name.
-    - review_status (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
-    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.<br><br>
+    - **form_id** (str): The form_id of the SurveyCTO form.
+    - **repeat_group_name** (str): Form's repeat group name.
+    - **review_status** (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
+    - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
+
+<br><br>
       
 *
   ```python
@@ -76,8 +82,10 @@ SurveyCTOObject(server_name, username, password)
     Fetch SurveyCTO server dataset data.
 
     *Parameters:*
-    - dataset_id (str): The server dataset id of the SurveyCTO dataset.
-    - line_breaks (str, optional): Replace linebreaks in the csv data with some other character.<br><br>
+    - **dataset_id** (str): The server dataset id of the SurveyCTO dataset.
+    - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
+
+<br><br>
       
 *
   ```python
@@ -86,9 +94,11 @@ SurveyCTOObject(server_name, username, password)
     Fetch form's file attachments like media/audio/images from SurveyCTO.
 
     *Parameters:*
-    - url (str): The URL to the attached file.   
+    - **url** (str): The URL to the attached file.   
       
   
+<br><br>
+
 <a name="usecases"></a>
 # Use Cases
 
@@ -131,12 +141,13 @@ scto = SurveyCTOObject(server_name, username, password)
   scto.get_form_data(dataset_id, line_breaks=' ')
   ```
 
-
+<br><br>
 
 <a name="license"></a>
 # License
 [The MIT License (MIT)](LICENSE.md)
 
+<br><br>
 
 <a name="apioptions"></a>
 # SCTO API Options
