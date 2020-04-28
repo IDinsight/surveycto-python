@@ -2,7 +2,6 @@
 
 Python library to use the SurveyCTO API to download data
 
-
 # Table of Contents
 
 * [Installation](#installation)
@@ -11,6 +10,7 @@ Python library to use the SurveyCTO API to download data
 * [License](#license)
 * [SCTO API Options](#apioptions)
 
+<br>
 
 <a name="installation"></a>
 # Installation
@@ -23,6 +23,8 @@ Python library to use the SurveyCTO API to download data
 ```bash
 pip install pysurveycto
 ```
+
+<br>
 
 <a name="usage"></a>
 # Usage
@@ -55,45 +57,45 @@ SurveyCTOObject(server_name, username, password)
     - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
     - **keyfile**(str, optional): The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
   </p>
-<br><br>
+<br>
 
 *
   ```python
   get_repeatgroup(form_id, repeat_group_name, review_status=None, line_breaks=None)
   ```
-    Fetch SurveyCTO form's repeatgroup data.
+  <p>Fetch SurveyCTO form's repeatgroup data.
 
     *Parameters:*
     - **form_id** (str): The form_id of the SurveyCTO form.
     - **repeat_group_name** (str): Form's repeat group name.
     - **review_status** (list, optional): Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
     - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
-
-<br><br>
+  </p>
+<br>
       
 *
   ```python
   get_server_dataset(dataset_id, line_breaks=None)
   ```
-    Fetch SurveyCTO server dataset data.
+  <p>Fetch SurveyCTO server dataset data.
 
     *Parameters:*
     - **dataset_id** (str): The server dataset id of the SurveyCTO dataset.
     - **line_breaks** (str, optional): Replace linebreaks in the csv data with some other character.
-
-<br><br>
+  </p>
+<br>
       
 *
   ```python
   get_attachment(url)
   ```
-    Fetch form's file attachments like media/audio/images from SurveyCTO.
+  <p>Fetch form's file attachments like media/audio/images from SurveyCTO.
 
     *Parameters:*
     - **url** (str): The URL to the attached file.   
-      
+  </p>    
   
-<br><br>
+<br>
 
 <a name="usecases"></a>
 # Use Cases
@@ -137,13 +139,13 @@ scto = SurveyCTOObject(server_name, username, password)
   scto.get_form_data(dataset_id, line_breaks=' ')
   ```
 
-<br><br>
+<br>
 
 <a name="license"></a>
 # License
 [The MIT License (MIT)](LICENSE.md)
 
-<br><br>
+<br>
 
 <a name="apioptions"></a>
 # SCTO API Options
