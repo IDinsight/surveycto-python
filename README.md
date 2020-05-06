@@ -17,7 +17,7 @@ Python library to use the SurveyCTO API to download data
 
 ## Prerequisites
 
-- Python version 2.6, 2.7, 3.4, 3.5 or 3.6
+- Python version >= 3.6
 
 ## Install Package
 ```bash
@@ -31,7 +31,9 @@ pip install pysurveycto
 
 ## Initialize SCTO Object
 ```python
-SurveyCTOObject(server_name, username, password)
+SurveyCTOObject(server_name, 
+                username, 
+                password)
 ```
   *Parameters:*
   - **server_name** *(str)*: SurveyCTO server name
@@ -43,7 +45,14 @@ SurveyCTOObject(server_name, username, password)
 
 * 
   ```python
-  get_form_data(form_id, format=’csv’, shape=’wide’, date=None, review_status=None, repeat_groups=None, line_breaks=None, keyfile=False)
+  get_form_data(form_id, 
+                format=’csv’, 
+                shape=’wide’, 
+                date=None, 
+                review_status=None, 
+                repeat_groups=None, 
+                line_breaks=None, 
+                keyfile=False)
   ```
   <p>Fetch SurveyCTO form data in json or csv formats.
 
@@ -56,12 +65,17 @@ SurveyCTOObject(server_name, username, password)
     - **repeat_groups** *(bool, optional)*: Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
     - **line_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
     - **keyfile** *(str, optional)*: The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
+
+    *Returns:* Form data in json or csv (wide or long) format depending on the parameters
   </p>
 <br>
 
 *
   ```python
-  get_repeatgroup(form_id, repeat_group_name, review_status=None, line_breaks=None)
+  get_repeatgroup(form_id, 
+                  repeat_group_name, 
+                  review_status=None, 
+                  line_breaks=None)
   ```
   <p>Fetch SurveyCTO form's repeatgroup data.
 
@@ -70,18 +84,23 @@ SurveyCTOObject(server_name, username, password)
     - **repeat_group_name** *(str)*: Form's repeat group name.
     - **review_status** *(list, optional)*: Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
     - **line_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
+  
+    *Returns:* Repeat group data in csv format
   </p>
 <br>
       
 *
   ```python
-  get_server_dataset(dataset_id, line_breaks=None)
+  get_server_dataset(dataset_id, 
+                     line_breaks=None)
   ```
   <p>Fetch SurveyCTO server dataset data.
 
     *Parameters:*
     - **dataset_id** *(str)*: The server dataset id of the SurveyCTO dataset.
     - **line_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
+
+    *Returns:* Server dataset data in csv format
   </p>
 <br>
       
@@ -92,7 +111,9 @@ SurveyCTOObject(server_name, username, password)
   <p>Fetch form's file attachments like media/audio/images from SurveyCTO.
 
     *Parameters:*
-    - **url** *(str)*: The URL to the attached file.   
+    - **url** *(str)*: The URL to the attached file. 
+
+    *Returns:* The url content
   </p>    
   
 <br>
@@ -101,6 +122,7 @@ SurveyCTOObject(server_name, username, password)
 # Use Cases
 
 ```python
+import pysurveycto
 scto = SurveyCTOObject(server_name, username, password)
 ```
 
