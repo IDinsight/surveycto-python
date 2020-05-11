@@ -133,3 +133,5 @@ dmypy.json
 *.sublime-workspace
 *.sublime-project
 *.egg-info/
+
+config.cfg

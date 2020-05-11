@@ -17,7 +17,7 @@ Python library to use the SurveyCTO API to download data
 
 ## Prerequisites
 
-- Python version >= 3.6
+- Python version >= 3
 
 ## Install Package
 ```bash
@@ -52,7 +52,7 @@ SurveyCTOObject(server_name,
                 review_status=None, 
                 repeat_groups=None, 
                 line_breaks=None, 
-                keyfile=False)
+                key=False)
   ```
   <p>Fetch SurveyCTO form data in json or csv formats.
 
@@ -64,7 +64,7 @@ SurveyCTOObject(server_name,
     - **review_status** *(list, optional)*: Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
     - **repeat_groups** *(bool, optional)*: Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
     - **line_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
-    - **keyfile** *(str, optional)*: The private key to decrypt form data. This can be used only for json extracts without a review_status parameter.
+    - **key** *(str, optional)*: The private key to decrypt form data in binary/string. This can be used only for json extracts without a review_status parameter.
 
     *Returns:* Form data in json or csv (wide or long) format depending on the parameters
   </p>
@@ -106,12 +106,14 @@ SurveyCTOObject(server_name,
       
 *
   ```python
-  get_attachment(url)
+  get_attachment(url,
+                 key=False)
   ```
   <p>Fetch form's file attachments like media/audio/images from SurveyCTO.
 
     *Parameters:*
     - **url** *(str)*: The URL to the attached file. 
+    - **key** *(str, optional)*: The private key to decrypt an encrupted attachment in binary/string. 
 
     *Returns:* The url content
   </p>    
@@ -151,14 +153,29 @@ scto = SurveyCTOObject(server_name, username, password)
   scto.get_form_data(form_id, format=’json’)
   ```
 
+- Get a wide json with forms completed on given date
+  ```python
+  date_input = datetime.datetime(2020, 1, 12, 13, 42, 42)
+  scto.get_form_data(form_id, format=’json’, date=date_input)
+  ```
+
 - Get a wide json for encrypted form starting after a given CompletionDate
   ```python
-  scto.get_form_data(form_id, format=’json’, date=my_datetime, keyfile='<path to keyfile>')
+  key_data = open('<path to keyfile>', 'rb')
+  scto.get_form_data(form_id, format=’json’, date=my_datetime, key=key_data)
   ```
 
 - Get a server dataset with linebreaks replaced with space
   ```python
   scto.get_form_data(dataset_id, line_breaks=' ')
+  ```
+
+- Get a media file attachment and save to file
+  ```python
+  data = scto.get_attachment(url)
+  f = open(file_name, 'wb')
+  f.write(data)
+  f.close()
   ```
 
 <br>

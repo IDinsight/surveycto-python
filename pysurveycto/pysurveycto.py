@@ -45,40 +45,49 @@ class SurveyCTOObject(object):
     def get_url_data(self,
                      url,
                      line_breaks=None,
-                     keyfile=False):
+                     key=False):
         """
             Function to fetch data directly from a scto url
-            :param url: SurveyCTO URL
+            :param url: SurveyCTO URL.
+            :line_braeks: Replace linebreaks in the csv data with some other character.
+            :key: The private key to decrypt form data.
         """
 
         # Change line break settings as per user parameter
         if (line_breaks is not None):
             v_url_encoded_line_break = quote(line_breaks)
-            v_settings = f'''https://{self.server_name}.surveycto.com/api/v1/forms/settings/csv/linebreak?v={v_url_encoded_line_break}'''
+            v_settings = 'https://' + self.server_name + \
+                         '.surveycto.com/api/v1/forms/settings/csv/linebreak?v=' + v_url_encoded_line_break
+            
             try:
-                response = requests.post(
-                    v_settings, headers=self.default_headers, auth=self.auth_basic)
+                response = requests.post(v_settings, 
+                                         headers=self.default_headers, 
+                                         auth=self.auth_basic)
                 response.raise_for_status()
             except Exception as e:
                 try:
-                    response = requests.post(
-                        v_settings, headers=self.default_headers, auth=self.auth_disgest)
+                    response = requests.post(v_settings, 
+                                             headers=self.default_headers, 
+                                             auth=self.auth_disgest)
                     response.raise_for_status()
                 except Exception as e:
                     response = False
                     raise ValueError(e)
         else:
             # restore default
-            v_settings = f'https://{self.server_name}.surveycto.com/api/v1/forms/settings/csv/linebreak'
+            v_settings = 'https://' + self.server_name + \
+                         '.surveycto.com/api/v1/forms/settings/csv/linebreak'
 
             try:
-                response = requests.delete(
-                    v_settings, headers=self.default_headers, auth=self.auth_basic)
+                response = requests.delete(v_settings, 
+                                           headers=self.default_headers, 
+                                           auth=self.auth_basic)
                 response.raise_for_status()
             except Exception as e:
                 try:
-                    response = requests.delete(
-                        v_settings, headers=self.default_headers, auth=self.auth_disgest)
+                    response = requests.delete(v_settings, 
+                                               headers=self.default_headers, 
+                                               auth=self.auth_disgest)
                     response.raise_for_status()
                 except Exception as e:
                     response = False
@@ -86,26 +95,32 @@ class SurveyCTOObject(object):
 
         # Extract using basic authentication as per SurveyCTO 2.70 update
         try:
-            if keyfile is False:
-                response = requests.get(
-                    url, headers=self.default_headers, auth=self.auth_basic)
+            if key is False:
+                response = requests.get(url, 
+                                        headers=self.default_headers, 
+                                        auth=self.auth_basic)
             else:
-                files = {'private_key': open(keyfile, 'rb')}
-                response = requests.post(
-                    url, files=files, headers=self.default_headers, auth=self.auth_basic)
+                files = {'private_key': key}
+                response = requests.post(url, 
+                                         files=files, 
+                                         headers=self.default_headers, 
+                                         auth=self.auth_basic)
 
             response.raise_for_status()
 
         except Exception as e:
             # Try digest authentication which works for old SurveyCTO versions
             try:
-                if keyfile is False:
-                    response = requests.get(
-                        url, headers=self.default_headers, auth=self.auth_disgest)
+                if key is False:
+                    response = requests.get(url, 
+                                            headers=self.default_headers, 
+                                            auth=self.auth_disgest)
                 else:
-                    files = {'private_key': open(keyfile, 'rb')}
-                    response = requests.post(
-                        url, files=files, headers=self.default_headers, auth=self.auth_disgest)
+                    files = {'private_key': key}
+                    response = requests.post(url, 
+                                             files=files, 
+                                             headers=self.default_headers, 
+                                             auth=self.auth_disgest)
 
                 response.raise_for_status()
 
@@ -125,7 +140,7 @@ class SurveyCTOObject(object):
                       review_status=None,
                       repeat_groups=None,
                       line_breaks=None,
-                      keyfile=False):
+                      key=False):
         """
             Fetch SurveyCTO form data in json or csv formats.
             :param form_id (str): The form_id of the SurveyCTO form.
@@ -142,8 +157,8 @@ class SurveyCTOObject(object):
             		with the repeat groups. Can only be specified when returning long data, in which case it will 
             		default to true.
             :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
-            :param keyfile(str, optional): The private key to decrypt form data. This can only be specified when returning
-                    data in json format without review_status parameter.
+            :param key(str, optional): The private key to decrypt form data in binary/string format. This can only be 
+                    specified when returning data in json format without review_status parameter.
         """
 
         if (format == 'csv'):
@@ -176,8 +191,8 @@ class SurveyCTOObject(object):
                 raise IllegalArgumentError(
                     "Date can only be specified when returning data in json format.")
 
-            # Check params - keyfile not allowed in csv formats
-            if keyfile is not False:
+            # Check params - key not allowed in csv formats
+            if key is not False:
                 raise IllegalArgumentError(
                     "Encrypted data extraction is only supported when returning data in json format.")
 
@@ -193,28 +208,39 @@ class SurveyCTOObject(object):
                     raise IllegalArgumentError(
                         "Repeat groups can only be specified when returning data in csv long format.")
 
-                url = f'https://{self.server_name}.surveycto.com/api/v1/forms/data/wide/csv/{form_id}?r={url_review_status}'
-                data = (self.get_url_data(url, line_breaks, keyfile=keyfile)).text
+                url = 'https://' + self.server_name + \
+                      '.surveycto.com/api/v1/forms/data/wide/csv/' + form_id + '?r=' + url_review_status
+                data = (self.get_url_data(url, 
+                                          line_breaks, 
+                                          key=key)).text
                 return data
 
             else:
 
                 if (repeat_groups == False):
 
-                    url = f'https://{self.server_name}.surveycto.com/api/v1/forms/data/csv/{form_id}?r={url_review_status}'
-                    data = (self.get_url_data(url, line_breaks, keyfile=keyfile)).text
+                    url = 'https://' + self.server_name + \
+                          '.surveycto.com/api/v1/forms/data/csv/' + form_id + '?r=' + url_review_status
+                    data = (self.get_url_data(url, 
+                                              line_breaks, 
+                                              key=key)).text
                     return data
 
                 else:
 
                     # Default to returning all repeat groups in a dictionary
-                    files_url = f'https://{self.server_name}.surveycto.com/api/v1/forms/files/csv/{form_id}'
-                    url_list = (self.get_url_data(files_url, line_breaks, keyfile=keyfile)).text
+                    files_url = 'https://' + self.server_name + \
+                                '.surveycto.com/api/v1/forms/files/csv/' + form_id
+                    url_list = (self.get_url_data(files_url, 
+                                                  line_breaks, 
+                                                  key=key)).text
                     data_dict = {}
                     url_count = 0
                     for url in url_list.splitlines():
-                        url = url + f'?r={url_review_status}'
-                        data = (self.get_url_data(url, line_breaks, keyfile=keyfile)).text
+                        url = url + '?r=' + url_review_status
+                        data = (self.get_url_data(url, 
+                                                  line_breaks, 
+                                                  key=key)).text
                         data_dict[url_count] = data
                         url_count = url_count + 1
 
@@ -250,8 +276,8 @@ class SurveyCTOObject(object):
                         raise TypeError(
                                 "review_status parameter is expected to be a list.")
 
-                    # Check params - keyfile not allowed in json formats with review status
-                    if keyfile is not False:
+                    # Check params - key not allowed in json formats with review status
+                    if key is not False:
                         raise IllegalArgumentError(
                             "Encrypted data extraction is only supported in returning data json format without review status filter.")
 
@@ -270,11 +296,13 @@ class SurveyCTOObject(object):
                             url_review_count+=1
 
                     # If review status is specified, use V1 API with review status
-                    url = f'https://{self.server_name}.surveycto.com/api/v1/forms/data/wide/json/{form_id}?r={url_review_status}'
+                    url = 'https://' + self.server_name + \
+                          '.surveycto.com/api/v1/forms/data/wide/json/' + form_id + '?r=' + url_review_status
 
                 else:
                     # If no review status specified, use V2 API with date param
-                    url = f'https://{self.server_name}.surveycto.com/api/v2/forms/data/wide/json/{form_id}?date={url_date}'
+                    url = 'https://' + self.server_name + \
+                          '.surveycto.com/api/v2/forms/data/wide/json/' + form_id + '?date=' + url_date
 
             else:
 
@@ -287,20 +315,21 @@ class SurveyCTOObject(object):
 
                     if (isinstance(date, datetime.date)):
                         # convert date to required format
-                        date = datetime.datetime.combine(
-                            date, datetime.datetime.min.time())
+                        date = datetime.datetime.combine(date, 
+                                                         datetime.datetime.min.time())
 
-                    url_date = quote(
-                        date.strftime("%b %-d, %Y %-I:%M:%S %p"))
+                    url_date = quote(date.strftime("%b %-d, %Y %-I:%M:%S %p"))
 
                 else:
                      # Check params - date is of datetime.date or datetime.datetime object type
                     raise TypeError(
                         'Date argument is expected to be a datetime.date or datetime.datetime object')
 
-                url = f'https://{self.server_name}.surveycto.com/api/v2/forms/data/wide/json/{form_id}?date={url_date}'
+                url = 'https://' + self.server_name + \
+                      '.surveycto.com/api/v2/forms/data/wide/json/' + form_id + '?date=' + url_date
 
-            data = (self.get_url_data(url, keyfile=keyfile)).json()
+            data = (self.get_url_data(url, 
+                                      key=key)).json()
             return data
 
 
@@ -320,9 +349,12 @@ class SurveyCTOObject(object):
             :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
         """
 
-        if not isinstance(review_status, list):
-            raise TypeError(
-                    "review_status parameter is expected to be a list.")
+        if review_status is not None:
+            if not isinstance(review_status, list):
+                raise TypeError(
+                        "review_status parameter is expected to be a list.")
+        else:
+            review_status = ['approved']
 
         url_review_status = ""
         url_review_count = 0
@@ -338,8 +370,10 @@ class SurveyCTOObject(object):
                     url_review_status = url_review_status + "," + status
                 url_review_count+=1
 
-        url = f'https://{self.server_name}.surveycto.com/api/v1/forms/data/csv/{form_id}/{repeat_group_name}?r={url_review_status}'
-        data = (self.get_url_data(url, line_breaks)).text
+        url = 'https://' + self.server_name + \
+              '.surveycto.com/api/v1/forms/data/csv/' + form_id + '/' + repeat_group_name + '?r=' + url_review_status
+        data = (self.get_url_data(url, 
+                                  line_breaks)).text
         return data
 
 
@@ -353,19 +387,24 @@ class SurveyCTOObject(object):
             :param line_breaks (str, optional): Replace linebreaks in the csv data with some other character.
         """
 
-        url = f'https://{self.server_name}.surveycto.com/api/v2/datasets/data/csv/{dataset_id}'
-        data = (self.get_url_data(url, line_breaks)).text
+        url = 'https://' + self.server_name + \
+              '.surveycto.com/api/v2/datasets/data/csv/' + dataset_id
+        data = (self.get_url_data(url, 
+                                  line_breaks)).text
         return data
 
 
 
     def get_attachment(self,
-                       url):
+                       url,
+                       key=False):
         """
-                Fetch form's file attachments like media/audio/images from SurveyCTO
-                :param url (str): The URL to fetch the attached file
+            Fetch form's file attachments like media/audio/images from SurveyCTO
+            :param url (str): The URL to fetch the attached file
+            :param key(str, optional): The private key to decrypt form data in binary/string format.
         """
 
-        data = (self.get_url_data(url)).content
+        data = (self.get_url_data(url, 
+                                  key=key)).content
         return data
 
