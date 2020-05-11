@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pysurvecto",
+    name="pysurveycto",
     version="0.0.1",
     author="Eric Dodge, Jeenu Thomas",
     author_email="it@idinsight.org, Eric.Dodge@idinsight.org, Jeenu.Thomas@idinsight.org",
