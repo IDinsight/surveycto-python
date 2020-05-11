@@ -14,9 +14,8 @@ setuptools.setup(
     url="https://github.com/IDinsight/surveycto-python/",
     packages=setuptools.find_packages(),
     install_requires=[
-          'requests',
-          'datetime',
-          'urllib',
+          'requests>=2.0.0',
+          'urllib3>=1.21.1',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
