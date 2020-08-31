@@ -1,6 +1,6 @@
 # pysurveycto
 
-Python library to use the SurveyCTO API to download data
+Python library to download data using the SurveyCTO REST API
 
 # Table of Contents
 
