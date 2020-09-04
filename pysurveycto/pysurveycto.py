@@ -58,7 +58,7 @@ class SurveyCTOObject(object):
         }
 
 
-    def __print_user_response__(self, err):
+    def __print_user_response(self, err):
         """
             Private function to print specific responses based on the HTTP response code
 
@@ -155,12 +155,12 @@ class SurveyCTOObject(object):
                 except requests.exceptions.HTTPError as e:
 
                     response = False
-                    self.__print_user_response__(e)
+                    self.__print_user_response(e)
                     raise ValueError(e)
 
             else:
                 response = False
-                self.__print_user_response__(e)
+                self.__print_user_response(e)
                 # raise SystemExit(e)
                 raise ValueError(e)
 
@@ -169,8 +169,8 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_review_status_and_raise__(self,
-                                          review_status):
+    def __check_review_status_and_raise(self,
+                                        review_status):
         """
             Private function to check the review status param and raise error
 
@@ -189,8 +189,8 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_review_status_with_date_and_raise__(self,
-                                                    review_status):
+    def __check_review_status_with_date_and_raise(self,
+                                                  review_status):
         """
             Private function to check if review status is specified with date filter and raise warning
 
@@ -201,8 +201,8 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_key_and_raise__(self,
-                                key):
+    def __check_key_and_raise(self,
+                              key):
         """
             Private function to check key parameter and raise error
 
@@ -213,9 +213,9 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_date_and_raise__(self,
-                                 oldest_completion_date,
-                                 format):
+    def __check_date_and_raise(self,
+                               oldest_completion_date,
+                               format):
         """
             Private function to check date parameter and raise warning/error
 
@@ -231,8 +231,8 @@ class SurveyCTOObject(object):
 
 
 
-    def __get_url_date__(self,
-                         oldest_completion_date):
+    def __get_url_date(self,
+                       oldest_completion_date):
         """
             Private function to return date for in required url format
 
@@ -249,9 +249,9 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_shape_and_raise__(self,
-                                  format,
-                                  shape):
+    def __check_shape_and_raise(self,
+                                format,
+                                shape):
         """
             Private function to check the shape parameter and raise warning/error
 
@@ -269,9 +269,9 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_repeat_groups_and_raise__(self,
-                                          repeat_groups,
-                                          shape):
+    def __check_repeat_groups_and_raise(self,
+                                        repeat_groups,
+                                        shape):
         """
             Private function to check the repeat groups parameter and raise warning
 
@@ -285,8 +285,8 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_line_breaks_and_raise__(self,
-                                        line_breaks):
+    def __check_line_breaks_and_raise(self,
+                                      line_breaks):
         """
             Private function to check the line break parameter and raise warning
 
@@ -299,78 +299,79 @@ class SurveyCTOObject(object):
 
 
 
-    def __check_csv_extraction_params__(self,
-                                        shape,
-                                        oldest_completion_date,
-                                        review_status,
-                                        repeat_groups,
-                                        key):
+    def __check_csv_extraction_params(self,
+                                      shape,
+                                      oldest_completion_date,
+                                      review_status,
+                                      repeat_groups,
+                                      key):
         """
             Check parameters passed for csv extraction
 
         """
 
         # Shape allowed values are 'wide' and 'long'
-        self.__check_shape_and_raise__('csv', shape)
+        self.__check_shape_and_raise('csv', shape)
 
         # oldest_completion_date not allowed in csv format
-        self.__check_date_and_raise__(oldest_completion_date,
-                                      format)
+        self.__check_date_and_raise(oldest_completion_date,
+                                    format)
 
         # review_status should be a list of allowed values
-        self.__check_review_status_and_raise__(review_status)
+        self.__check_review_status_and_raise(review_status)
 
         # repeat_groups not alowed in wide csv format
-        self.__check_repeat_groups_and_raise__(repeat_groups,
-                                               shape)
+        self.__check_repeat_groups_and_raise(repeat_groups,
+                                             shape)
 
         # key not allowed in csv format
-        self.__check_key_and_raise__(key)
+        self.__check_key_and_raise(key)
 
 
 
-    def __check_json_extraction_params__(self,
-                                         shape,
-                                         oldest_completion_date,
-                                         review_status,
-                                         repeat_groups,
-                                         line_breaks):
+    def __check_json_extraction_params(self,
+                                       shape,
+                                       oldest_completion_date,
+                                       review_status,
+                                       repeat_groups,
+                                       line_breaks):
         """
             Check parameters passed for json extraction
 
         """
 
         # Check params - shape not allowed in json format
-        self.__check_shape_and_raise__('json', shape)
+        self.__check_shape_and_raise('json', shape)
         shape = 'wide'
 
         # Check params - repeat_groups not allowed in json format
-        self.__check_repeat_groups_and_raise__(repeat_groups,
-                                               shape)
+        self.__check_repeat_groups_and_raise(repeat_groups,
+                                             shape)
 
         # Check params - line_breaks not allowed in json format
-        self.__check_line_breaks_and_raise__(line_breaks)
+        self.__check_line_breaks_and_raise(line_breaks)
 
         if ((oldest_completion_date == 0) or (oldest_completion_date is None)):
             if review_status is not None:
 
                 # Check params - review status
-                self.__check_review_status_and_raise__(review_status)
+                self.__check_review_status_and_raise(review_status)
 
                 # Check params - key not allowed in json formats with review status
-                self.__check_key_and_raise__(key)
+                self.__check_key_and_raise(key)
 
         else:
             # Check params - review_status not allowed in json formats with date filter
-            self.__check_review_status_with_date_and_raise__(review_status)
+            self.__check_review_status_with_date_and_raise(review_status)
 
             # Check params - oldest_completion_date
-            self.__check_date_and_raise__(oldest_completion_date, format)
+            self.__check_date_and_raise(oldest_completion_date, 
+                                        format)
 
 
 
-    def __get_repeat_groups__(self,
-                              form_id):
+    def __get_repeat_groups(self,
+                            form_id):
         """
             Private function to get the dictionary with repeat group {name: url} pairs
 
@@ -394,14 +395,14 @@ class SurveyCTOObject(object):
 
 
 
-    def __get_form_data_in_csv_format__(self,
-                                        form_id,
-                                        shape,
-                                        oldest_completion_date,
-                                        review_status,
-                                        repeat_groups,
-                                        line_breaks,
-                                        key):
+    def __get_form_data_in_csv_format(self,
+                                      form_id,
+                                      shape,
+                                      oldest_completion_date,
+                                      review_status,
+                                      repeat_groups,
+                                      line_breaks,
+                                      key):
         """
             Private function to extract form data in csv format
 
@@ -435,7 +436,7 @@ class SurveyCTOObject(object):
             else:
 
                 # Default to returning all repeat groups in a dictionary
-                repeat_groups_dict = self.__get_repeat_groups__(form_id)
+                repeat_groups_dict = self.__get_repeat_groups(form_id)
 
                 data_dict = {}
                 for key, value in repeat_groups_dict:
@@ -450,14 +451,14 @@ class SurveyCTOObject(object):
 
 
 
-    def __get_form_data_in_json_format__(self,
-                                         form_id,
-                                         shape,
-                                         oldest_completion_date,
-                                         review_status,
-                                         repeat_groups,
-                                         line_breaks,
-                                         key):
+    def __get_form_data_in_json_format(self,
+                                       form_id,
+                                       shape,
+                                       oldest_completion_date,
+                                       review_status,
+                                       repeat_groups,
+                                       line_breaks,
+                                       key):
         """
             Private function to extract form data in json formats
 
@@ -490,7 +491,7 @@ class SurveyCTOObject(object):
             # review_status not allowed in json formats with date filter
             review_status = None
 
-            url_date = self.__get_url_date__(oldest_completion_date)
+            url_date = self.__get_url_date(oldest_completion_date)
 
             url = f'''https://{self.server_name}.surveycto.com/api/v2/forms/data/{shape}/json/{form_id}?date={url_date}'''
 
@@ -535,37 +536,37 @@ class SurveyCTOObject(object):
                 review_status = ['approved']
 
             # Check params
-            self.__check_csv_extraction_params__(shape,
-                                                 oldest_completion_date,
-                                                 review_status,
-                                                 repeat_groups,
-                                                 key)
+            self.__check_csv_extraction_params(shape,
+                                               oldest_completion_date,
+                                               review_status,
+                                               repeat_groups,
+                                               key)
 
-            data = self.__get_form_data_in_csv_format__(form_id,
-                                                        shape,
-                                                        oldest_completion_date,
-                                                        review_status,
-                                                        repeat_groups,
-                                                        line_breaks,
-                                                        key)
+            data = self.__get_form_data_in_csv_format(form_id,
+                                                      shape,
+                                                      oldest_completion_date,
+                                                      review_status,
+                                                      repeat_groups,
+                                                      line_breaks,
+                                                      key)
             return data
 
         elif (format == 'json'):
 
             # Check params
-            self.__check_json_extraction_params__(shape,
-                                                  oldest_completion_date,
-                                                  repeat_groups,
-                                                  review_status,
-                                                  line_breaks)
+            self.__check_json_extraction_params(shape,
+                                                oldest_completion_date,
+                                                repeat_groups,
+                                                review_status,
+                                                line_breaks)
 
-            data = self.__get_form_data_in_json_format__(form_id,
-                                                         shape,
-                                                         oldest_completion_date,
-                                                         review_status,
-                                                         repeat_groups,
-                                                         line_breaks,
-                                                         key)
+            data = self.__get_form_data_in_json_format(form_id,
+                                                       shape, 
+                                                       oldest_completion_date,
+                                                       review_status,
+                                                       repeat_groups,
+                                                       line_breaks,
+                                                       key)
             return data
 
         else:
@@ -595,10 +596,10 @@ class SurveyCTOObject(object):
             review_status = ['approved']
 
         # Check params - review_status
-        self.__check_review_status_and_raise__(review_status)
+        self.__check_review_status_and_raise(review_status)
         url_review_status = ','.join(review_status)
 
-        repeat_groups_dict = self.__get_repeat_groups__(form_id)
+        repeat_groups_dict = self.__get_repeat_groups(form_id)
         del repeat_groups_dict['Main']
 
         if (repeat_group_name not in repeat_groups_dict.keys()):
