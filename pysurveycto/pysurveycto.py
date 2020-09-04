@@ -1,5 +1,5 @@
 """
-This library allows downloading data collected on SurveyCTO data collection app using SurveyCTO REST API.
+This library allows downloading survey data collected on SurveyCTO data collection app using SurveyCTO REST API.
 
 For more information on this library, see the README on GitHub:
     https://github.com/IDinsight/surveycto-python/blob/master/README.md
@@ -18,6 +18,13 @@ from urllib.parse import quote
 class IllegalArgumentError(ValueError):
     """
         Class created to handle invalid parameter errors
+    """
+    pass
+
+
+class NotImplementedError(ValueError):
+    """
+        Class created to handle requests that are not yet implemented
     """
     pass
 
@@ -41,7 +48,7 @@ class SurveyCTOObject(object):
 
         self.server_name = server_name
 
-        # Defining both to be compatible with all SCTO versions
+        # Defining both to be compatible with all SurveyCTO versions
         self.auth_basic = requests.auth.HTTPBasicAuth(username,
                                                       password)
         self.auth_disgest = requests.auth.HTTPDigestAuth(username,
@@ -51,15 +58,25 @@ class SurveyCTOObject(object):
         }
 
 
+    def __print_user_response__(self, err):
+        """
+            Private function to print specific responses based on the HTTP response code
+
+        """
+
+        if (err.response.status_code == 417):
+            v_error_json = err.response.json()
+            print(f'''Error message: {v_error_json["error"]["message"]}''')
+
 
     def get_url_data(self,
                      url,
                      line_breaks=None,
                      key=False):
         """
-            Function to fetch data directly from a scto url
+            Function to fetch data directly from a SurveyCTO url
             :param url: SurveyCTO URL
-            :line_breaks: Replace linebreaks in the csv data with some other character
+            :line_breaks: Replace default linebreaks ('\n') in the csv data with this character
             :key: The private key to decrypt form data
         """
 
@@ -73,13 +90,13 @@ class SurveyCTOObject(object):
                                          headers=self.default_headers,
                                          auth=self.auth_basic)
                 response.raise_for_status()
-            except Exception as e:
+            except requests.exceptions.HTTPError as e:
                 try:
                     response = requests.post(v_settings,
                                              headers=self.default_headers,
                                              auth=self.auth_disgest)
                     response.raise_for_status()
-                except Exception as e:
+                except requests.exceptions.HTTPError as e:
                     response = False
                     raise ValueError(e)
         else:
@@ -91,13 +108,13 @@ class SurveyCTOObject(object):
                                            headers=self.default_headers,
                                            auth=self.auth_basic)
                 response.raise_for_status()
-            except Exception as e:
+            except requests.exceptions.HTTPError as e:
                 try:
                     response = requests.delete(v_settings,
                                                headers=self.default_headers,
                                                auth=self.auth_disgest)
                     response.raise_for_status()
-                except Exception as e:
+                except requests.exceptions.HTTPError as e:
                     response = False
                     raise ValueError(e)
 
@@ -116,25 +133,37 @@ class SurveyCTOObject(object):
 
             response.raise_for_status()
 
-        except Exception as e:
-            # Try digest authentication which works for old SurveyCTO versions
-            try:
-                if key is False:
-                    response = requests.get(url,
-                                            headers=self.default_headers,
-                                            auth=self.auth_disgest)
-                else:
-                    files = {'private_key': key}
-                    response = requests.post(url,
-                                             files=files,
-                                             headers=self.default_headers,
-                                             auth=self.auth_disgest)
+        #except Exception as e:
+        except requests.exceptions.HTTPError as e:
 
-                response.raise_for_status()
+            if (e.response.status_code == 401):
+                # Try digest authentication which works for old SurveyCTO versions
+                try:
+                    if key is False:
+                        response = requests.get(url,
+                                                headers=self.default_headers,
+                                                auth=self.auth_disgest)
+                    else:
+                        files = {'private_key': key}
+                        response = requests.post(url,
+                                                 files=files,
+                                                 headers=self.default_headers,
+                                                 auth=self.auth_disgest)
 
-            except Exception as e:
+                    response.raise_for_status()
+
+                except requests.exceptions.HTTPError as e:
+
+                    response = False
+                    self.__print_user_response__(e)
+                    raise ValueError(e)
+
+            else:
                 response = False
+                self.__print_user_response__(e)
+                # raise SystemExit(e)
                 raise ValueError(e)
+
 
         return response
 
@@ -521,7 +550,7 @@ class SurveyCTOObject(object):
                                                         key)
             return data
 
-        else:
+        elif (format == 'json'):
 
             # Check params
             self.__check_json_extraction_params__(shape,
@@ -538,6 +567,12 @@ class SurveyCTOObject(object):
                                                          line_breaks,
                                                          key)
             return data
+
+        else:
+
+            raise NotImplementedError(
+                "Support for downloading data in '" + format + "' format is currently not available. Allowed values are: 'json' and 'csv'.")
+
 
 
 
