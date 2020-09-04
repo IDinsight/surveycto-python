@@ -1,6 +1,5 @@
-exec(open('../pysurveycto/pysurveycto.py').read())
-
 import configparser
+import pysurveycto
     
 def test1(scto):
 
@@ -47,9 +46,9 @@ if __name__ == '__main__':
     v_config.read('./config.cfg')
     v_scto_config = v_config['surveycto-dod']
     #v_scto_config = v_config['surveycto-eg']
-
-    scto = SurveyCTOObject(v_scto_config['servername'], 
-                           v_scto_config['username'], 
-                           v_scto_config['password'])
+    
+    scto = pysurveycto.SurveyCTOObject(v_scto_config['servername'], 
+                                       v_scto_config['username'], 
+                                       v_scto_config['password'])
 
     test1(scto)

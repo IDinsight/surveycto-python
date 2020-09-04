@@ -125,7 +125,7 @@ SurveyCTOObject(server_name,
 
 ```python
 import pysurveycto
-scto = SurveyCTOObject(server_name, username, password)
+scto = pysurveycto.SurveyCTOObject(server_name, username, password)
 ```
 
 - Get a wide csv

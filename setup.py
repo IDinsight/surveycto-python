@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pysurveycto",
-    version="0.0.1",
+    version="0.0.2",
     author="Eric Dodge, Jeenu Thomas",
     author_email="it@idinsight.org, Eric.Dodge@idinsight.org, Jeenu.Thomas@idinsight.org",
     description="Interacting with SurveyCTO using Python",
