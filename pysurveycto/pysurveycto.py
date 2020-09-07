@@ -209,7 +209,7 @@ class SurveyCTOObject(object):
         """
         if key is not False:
             raise IllegalArgumentError(
-                "Encrypted data extraction is only supported in returning data json format without review status filter.")
+                "Encrypted data extraction is only supported when returning data in json format without review status filter.")
 
 
 
@@ -315,7 +315,7 @@ class SurveyCTOObject(object):
 
         # oldest_completion_date not allowed in csv format
         self.__check_date_and_raise(oldest_completion_date,
-                                    format)
+                                    'csv')
 
         # review_status should be a list of allowed values
         self.__check_review_status_and_raise(review_status)
@@ -366,7 +366,7 @@ class SurveyCTOObject(object):
 
             # Check params - oldest_completion_date
             self.__check_date_and_raise(oldest_completion_date, 
-                                        format)
+                                        'json')
 
 
 
@@ -556,8 +556,8 @@ class SurveyCTOObject(object):
             # Check params
             self.__check_json_extraction_params(shape,
                                                 oldest_completion_date,
-                                                repeat_groups,
                                                 review_status,
+                                                repeat_groups,
                                                 line_breaks)
 
             data = self.__get_form_data_in_json_format(form_id,
@@ -601,6 +601,10 @@ class SurveyCTOObject(object):
 
         repeat_groups_dict = self.__get_repeat_groups(form_id)
         del repeat_groups_dict['Main']
+
+        if (len(repeat_groups_dict.keys()) == 0):
+            raise IllegalArgumentError(
+                "No repeat groups found in the specified SurveyCTO form.")
 
         if (repeat_group_name not in repeat_groups_dict.keys()):
             raise IllegalArgumentError(

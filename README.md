@@ -1,6 +1,18 @@
 # pysurveycto
 
-Python library to download survey data collected on SurveyCTO data collection app via the SurveyCTO REST API
+.. image:: https://img.shields.io/pypi/v/dropbox.svg
+    :target: https://pypi.org/project/pysurveycto/
+    :alt: [Latest Release Version]
+
+.. image:: https://img.shields.io/pypi/l/dropbox.svg
+    :target: http://opensource.org/licenses/MIT
+    :alt: [Latest Release License]
+
+.. image:: https://img.shields.io/pypi/pyversions/dropbox.svg
+    :target: https://pypi.org/project/pysurveycto/
+    :alt: [Latest Release Supported Python Versions]
+ 
+Python library to download data collected on SurveyCTO data collection app using SurveyCTO REST API.
 
 # Table of Contents
 
