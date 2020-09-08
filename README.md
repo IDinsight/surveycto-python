@@ -10,7 +10,6 @@ Python library to download data collected on SurveyCTO data collection app using
 * [License](#license)
 * [SCTO API Options](#apioptions)
 
-<br>
 
 <a name="installation"></a>
 # Installation
@@ -24,7 +23,6 @@ Python library to download data collected on SurveyCTO data collection app using
 pip install pysurveycto
 ```
 
-<br>
 
 <a name="usage"></a>
 # Usage
@@ -48,7 +46,7 @@ SurveyCTOObject(server_name,
   get_form_data(form_id, 
                 format=’csv’, 
                 shape=’wide’, 
-                date=None, 
+                oldest_completion_date=None, 
                 review_status=None, 
                 repeat_groups=None, 
                 line_breaks=None, 
@@ -68,7 +66,7 @@ SurveyCTOObject(server_name,
 
     *Returns:* Form data in json or csv (wide or long) format depending on the parameters
   </p>
-<br>
+
 
 *
   ```python
@@ -87,7 +85,7 @@ SurveyCTOObject(server_name,
   
     *Returns:* Repeat group data in csv format
   </p>
-<br>
+
       
 *
   ```python
@@ -102,7 +100,7 @@ SurveyCTOObject(server_name,
 
     *Returns:* Server dataset data in csv format
   </p>
-<br>
+
       
 *
   ```python
@@ -118,7 +116,6 @@ SurveyCTOObject(server_name,
     *Returns:* The url content
   </p>    
   
-<br>
 
 <a name="usecases"></a>
 # Use Cases
@@ -153,16 +150,16 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
   scto.get_form_data(form_id, format=’json’)
   ```
 
-- Get a wide json with forms completed on given date
+- Get a wide json with forms completed after a given date (exclusive)
   ```python
   date_input = datetime.datetime(2020, 1, 12, 13, 42, 42)
-  scto.get_form_data(form_id, format=’json’, date=date_input)
+  scto.get_form_data(form_id, format=’json’, oldest_completion_date=date_input)
   ```
 
 - Get a wide json for encrypted form starting after a given CompletionDate
   ```python
   key_data = open('<path to keyfile>', 'rb')
-  scto.get_form_data(form_id, format=’json’, date=my_datetime, key=key_data)
+  scto.get_form_data(form_id, format=’json’, oldest_completion_date=my_datetime, key=key_data)
   ```
 
 - Get a server dataset with linebreaks replaced with space
@@ -178,13 +175,11 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
   f.close()
   ```
 
-<br>
 
 <a name="license"></a>
 # License
 [The MIT License (MIT)](LICENSE.md)
 
-<br>
 
 <a name="apioptions"></a>
 # SCTO API Options
