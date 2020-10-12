@@ -439,13 +439,13 @@ class SurveyCTOObject(object):
                 repeat_groups_dict = self.__get_repeat_groups(form_id)
 
                 data_dict = {}
-                for key, value in repeat_groups_dict:
+                for dict_key, dict_value in repeat_groups_dict.items():
 
-                    url = value + '?r=' + url_review_status
+                    url = dict_value + '?r=' + url_review_status
                     data = (self.get_url_data(url,
                                               line_breaks,
                                               key=key)).text
-                    data_dict[key] = data
+                    data_dict[dict_key] = data
 
                 return data_dict
 

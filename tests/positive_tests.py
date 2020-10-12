@@ -65,6 +65,13 @@ def test5(scto):
 
 
 
+def test6(scto):
+
+    data = scto.get_form_data('d2d_survey_rapid', shape='long')
+    print(data.keys())
+
+
+
 if __name__ == '__main__':
     v_config = configparser.ConfigParser()
     v_config.read('./config.cfg')
