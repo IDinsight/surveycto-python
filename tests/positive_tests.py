@@ -71,15 +71,33 @@ def test6(scto):
     print(data.keys())
 
 
+def test7(scto):
+
+    url = 'https://dod.surveycto.com/view/submission-attachment/AA_586934af-a194-4567-b059-2504deb19055_hh_reached.m4a?blobKey=1419845'
+    data = scto.get_attachment(url)
+    f = open('test.mp4', 'wb')
+    f.write(data)
+    f.close()
+
+
+def test8(scto):
+
+    key_data = open('/Users/jeenuthomas/Documents/IDinsight/Projects/DOD/Docs/Uganda_UCT_PRIVATEDONOTSHARE.pem', 'rb')
+    data = scto.get_form_data('gd_uct_endline', format='json', key=key_data)
+    data_df = convert_json_to_df(data)
+    print(data_df.columns)
+
 
 if __name__ == '__main__':
     v_config = configparser.ConfigParser()
     v_config.read('./config.cfg')
     #v_scto_config = v_config['surveycto-dod']
-    v_scto_config = v_config['surveycto-eg']
+    #v_scto_config = v_config['surveycto-eg']
+    v_scto_config = v_config['surveycto-ug']
     
     scto = pysurveycto.SurveyCTOObject(v_scto_config['servername'], 
                                        v_scto_config['username'], 
                                        v_scto_config['password'])
 
-    test1(scto)
+    test8(scto)
+

@@ -130,7 +130,7 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
   scto.get_form_data(form_id)
   ```
 
-- Get a long csv with repeat groups
+- Get a long csv with all repeat groups (Returns a dictionary with repeat group names as keys and csv data for the repeat groups as values)
   ```python
   scto.get_form_data(form_id, shape=’long’)
   ```
