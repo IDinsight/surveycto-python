@@ -44,14 +44,15 @@ Initialize SCTO Object
                    password)
 
 *Parameters:* 
-- **server\_name** *(str)*: SurveyCTO server name 
-- **username** *(str)*: SurveyCTO login username 
-- **password** *(str)*: SurveyCTO login password
+-  **server\_name** *(str)*: SurveyCTO server name 
+-  **username** *(str)*: SurveyCTO login username 
+-  **password** *(str)*: SurveyCTO login password
 
 Methods:
 --------
 
--  .. code:: python   
+-  .. code:: python
+
    get_form_data(form_id,
                  format=’csv’,
                  shape=’wide’,
@@ -61,8 +62,8 @@ Methods:
                  line_breaks=None,
                  key=False)
 
-Fetch SurveyCTO form data in json or csv formats.
-*Parameters:*
+   Fetch SurveyCTO form data in json or csv formats.
+   *Parameters:*
 
    -  **form\_id** *(str)*: The form\_id of the SurveyCTO form.
    -  **format** *(str, optional)*: The format of the returned data. Allowed values are: json, csv(default).
@@ -77,7 +78,8 @@ Fetch SurveyCTO form data in json or csv formats.
    on the parameters
 
 
--  .. code:: python   
+-  .. code:: python
+
    get_repeatgroup(form_id, 
                    repeat_group_name, 
                    review_status=None,                    
@@ -93,37 +95,27 @@ Fetch SurveyCTO form data in json or csv formats.
    -  **line\_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
 
    *Returns:* Repeat group data in csv format
-   </p>
-
-   .. raw:: html
 
 
--  ``python   get_server_dataset(dataset_id,                       line_breaks=None)``
+-  .. code:: python
 
-   .. raw:: html
-
-      <p>
+   get_server_dataset(dataset_id,
+                      line_breaks=None)
 
    Fetch SurveyCTO server dataset data.
 
    *Parameters:*
 
-   -  **dataset\_id** *(str)*: The server dataset id of the SurveyCTO
-      dataset.
-   -  **line\_breaks** *(str, optional)*: Replace linebreaks in the csv
-      data with some other character.
+   -  **dataset\_id** *(str)*: The server dataset id of the SurveyCTO dataset.
+   -  **line\_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
 
    *Returns:* Server dataset data in csv format
 
-   .. raw:: html
 
-      </p>
+-  .. code:: python
 
--  ``python   get_attachment(url,                  key=False)``
-
-   .. raw:: html
-
-      <p>
+   get_attachment(url,
+                  key=False)
 
    Fetch form's file attachments like media/audio/images from SurveyCTO.
 
@@ -135,47 +127,46 @@ Fetch SurveyCTO form data in json or csv formats.
 
    *Returns:* The url content
 
-   .. raw:: html
-
-      </p>    
-
 
 Use Cases
 =========
 
-.. code:: python
+-  .. code:: python
 
-    import pysurveycto
-    scto = pysurveycto.SurveyCTOObject(server_name, username, password)
+   import pysurveycto
+   scto = pysurveycto.SurveyCTOObject(server_name, username, password)
 
--  Get a wide csv ``python   scto.get_form_data(form_id)``
+-  Get a wide csv: 
+   ``scto.get_form_data(form_id)``
 
--  Get a long csv with all repeat groups (Returns a dictionary with
-   repeat group names as keys and csv data for the repeat groups as
-   values) ``python   scto.get_form_data(form_id, shape=’long’)``
+-  Get a long csv with all repeat groups (Returns a dictionary with repeat group names as keys and csv data for the repeat groups as values)
+   ``scto.get_form_data(form_id, shape=’long’)``
 
 -  Get a long csv without repeat groups
-   ``python   scto.get_form_data(form_id, shape=’long’, repeat_groups=false)``
+   ``scto.get_form_data(form_id, shape=’long’, repeat_groups=false)``
 
--  Get a wide csv with linebreaks replaced with space with only
-   pending-review submissions
-   ``python   scto.get_form_data(form_id, line_breaks=' ', review_status=['pending'])``
+-  Get a wide csv with linebreaks replaced with space with only pending-review submissions
+   ``scto.get_form_data(form_id, line_breaks=' ', review_status=['pending'])``
 
 -  Get a wide json
-   ``python   scto.get_form_data(form_id, format=’json’)``
+   ``scto.get_form_data(form_id, format=’json’)``
 
 -  Get a wide json with forms completed after a given date (exclusive)
-   ``python   date_input = datetime.datetime(2020, 1, 12, 13, 42, 42)   scto.get_form_data(form_id, format=’json’, oldest_completion_date=date_input)``
+   ``date_input = datetime.datetime(2020, 1, 12, 13, 42, 42)
+   scto.get_form_data(form_id, format=’json’, oldest_completion_date=date_input)``
 
--  Get a wide json for encrypted form starting after a given
-   CompletionDate
-   ``python   key_data = open('<path to keyfile>', 'rb')   scto.get_form_data(form_id, format=’json’, oldest_completion_date=my_datetime, key=key_data)``
+-  Get a wide json for encrypted form starting after a given CompletionDate
+   ``key_data = open('<path to keyfile>', 'rb')
+   scto.get_form_data(form_id, format=’json’, oldest_completion_date=my_datetime, key=key_data)``
 
 -  Get a server dataset with linebreaks replaced with space
-   ``python   scto.get_form_data(dataset_id, line_breaks=' ')``
+   ``scto.get_form_data(dataset_id, line_breaks=' ')``
 
 -  Get a media file attachment and save to file
-   ``python   data = scto.get_attachment(url)   f = open(file_name, 'wb')   f.write(data)   f.close()``
+   ``data = scto.get_attachment(url)   
+   f = open(file_name, 'wb')   
+   f.write(data)   
+   f.close()``
 
 
 License 
