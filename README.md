@@ -44,8 +44,8 @@ SurveyCTOObject(server_name,
 * 
   ```python
   get_form_data(form_id, 
-                format=’csv’, 
-                shape=’wide’, 
+                format='csv', 
+                shape='wide', 
                 oldest_completion_date=None, 
                 review_status=None, 
                 repeat_groups=None, 
@@ -132,12 +132,12 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
 
 - Get a long csv with all repeat groups (Returns a dictionary with repeat group names as keys and csv data for the repeat groups as values)
   ```python
-  scto.get_form_data(form_id, shape=’long’)
+  scto.get_form_data(form_id, shape='long')
   ```
 
 - Get a long csv without repeat groups
   ```python
-  scto.get_form_data(form_id, shape=’long’, repeat_groups=false)
+  scto.get_form_data(form_id, shape='long', repeat_groups=false)
   ```
 
 - Get a wide csv with line breaks replaced with space with only pending-review submissions
@@ -147,19 +147,19 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
 
 - Get a wide json
   ```python
-  scto.get_form_data(form_id, format=’json’)
+  scto.get_form_data(form_id, format='json')
   ```
 
 - Get a wide json with forms completed after a given date (exclusive)
   ```python
   date_input = datetime.datetime(2020, 1, 12, 13, 42, 42)
-  scto.get_form_data(form_id, format=’json’, oldest_completion_date=date_input)
+  scto.get_form_data(form_id, format='json', oldest_completion_date=date_input)
   ```
 
 - Get a wide json for encrypted form starting after a given CompletionDate
   ```python
   key_data = open('<path to keyfile>', 'rb')
-  scto.get_form_data(form_id, format=’json’, oldest_completion_date=my_datetime, key=key_data)
+  scto.get_form_data(form_id, format='json', oldest_completion_date=my_datetime, key=key_data)
   ```
 
 - Get a server dataset with line breaks replaced with space
