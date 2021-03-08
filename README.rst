@@ -204,5 +204,5 @@ SCTO API Options
 `SCTO API Documentation`_
 
 
-.. _The MIT License (MIT): https://github.com/IDinsight/surveycto-python/blob/readme_rst/LICENSE.md
+.. _The MIT License (MIT): https://github.com/IDinsight/surveycto-python/blob/master/LICENSE.md
 .. _SCTO API Documentation: https://support.surveycto.com/hc/en-us/articles/360033156894?flash_digest=0a6eded7694409181788cc46a7026897850d65b5&flash_digest=d76dde7c3ffc40f4a7f0ebd87596d32f3a52304f
