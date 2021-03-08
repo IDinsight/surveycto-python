@@ -74,7 +74,7 @@ Methods:
   -  **date** *(datetime.date or datetime.datetime object, optional)*: Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
   -  **review\_status** *(list, optional)*: Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
   -  **repeat\_groups** *(bool, optional)*: Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
-  -  **line\_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
+  -  **line\_breaks** *(str, optional)*: Replace line breaks in the csv data with some other character.
   -  **key** *(str, optional)*: The private key to decrypt form data in binary/string. This can be used only for json extracts without a review\_status parameter.
 
   *Returns:* Form data in json or csv (wide or long) format depending on the parameters
@@ -88,14 +88,14 @@ Methods:
                    review_status=None,                    
                    line_breaks=None) 
 
-  Fetch SurveyCTO form's repeatgroup data.
+  Fetch SurveyCTO form's repeat group data.
 
   *Parameters:*
 
   -  **form\_id** *(str)*: The form\_id of the SurveyCTO form.
   -  **repeat\_group\_name** *(str)*: Form's repeat group name.
   -  **review\_status** *(list, optional)*: Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
-  -  **line\_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
+  -  **line\_breaks** *(str, optional)*: Replace line breaks in the csv data with some other character.
 
   *Returns:* Repeat group data in csv format
 
@@ -111,7 +111,7 @@ Methods:
   *Parameters:*
 
   -  **dataset\_id** *(str)*: The server dataset id of the SurveyCTO dataset.
-  -  **line\_breaks** *(str, optional)*: Replace linebreaks in the csv data with some other character.
+  -  **line\_breaks** *(str, optional)*: Replace line breaks in the csv data with some other character.
 
   *Returns:* Server dataset data in csv format
 
@@ -157,7 +157,7 @@ Use Cases
     
      scto.get_form_data(form_id, shape=’long’, repeat_groups=false)
 
--  Get a wide csv with linebreaks replaced with space with only pending-review submissions
+-  Get a wide csv with line breaks replaced with space with only pending-review submissions
     .. code:: python
     
      scto.get_form_data(form_id, line_breaks=' ', review_status=['pending'])
@@ -179,7 +179,7 @@ Use Cases
      key_data = open('<path to keyfile>', 'rb')
      scto.get_form_data(form_id, format=’json’, oldest_completion_date=my_datetime, key=key_data)
 
--  Get a server dataset with linebreaks replaced with space
+-  Get a server dataset with line breaks replaced with space
     .. code:: python
     
      scto.get_form_data(dataset_id, line_breaks=' ')
@@ -195,11 +195,14 @@ Use Cases
 License 
 =======
 
-`The MIT License (MIT) <LICENSE.md>`__
+`The MIT License (MIT)`_
 
 
 SCTO API Options
 ================
 
-`SCTO API
-Documentation <https://support.surveycto.com/hc/en-us/articles/360033156894?flash_digest=0a6eded7694409181788cc46a7026897850d65b5&flash_digest=d76dde7c3ffc40f4a7f0ebd87596d32f3a52304f>`__
+`SCTO API Documentation`_
+
+
+.. _The MIT License (MIT): https://github.com/sendgrid/sendgrid-python/blob/HEAD/LICENSE
+.. _SCTO API Documentation: https://support.surveycto.com/hc/en-us/articles/360033156894?flash_digest=0a6eded7694409181788cc46a7026897850d65b5&flash_digest=d76dde7c3ffc40f4a7f0ebd87596d32f3a52304f
