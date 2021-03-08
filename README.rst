@@ -26,7 +26,8 @@ Prerequisites
 Install Package
 ---------------
 
-.. code:: bash 
+.. code:: bash
+
    pip install pysurveycto
 
 
@@ -37,6 +38,7 @@ Initialize SCTO Object
 ----------------------
 
 .. code:: python
+
    SurveyCTOObject(server_name, 
                    username, 
                    password)
@@ -80,9 +82,6 @@ Fetch SurveyCTO form data in json or csv formats.
                    repeat_group_name, 
                    review_status=None,                    
                    line_breaks=None) 
-
-   .. raw:: html
-   <p>
 
    Fetch SurveyCTO form's repeatgroup data.
 
