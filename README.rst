@@ -38,11 +38,17 @@ Initialize SCTO Object
 ----------------------
 
 .. code:: python
+   :linenos:
 
    SurveyCTOObject(server_name, 
                    username, 
                    password)
 
+
+.. code-block:: javascript
+  :linenos:
+
+  code . . .
 
 *Parameters:* 
 -  **server\_name** *(str)*: SurveyCTO server name 
