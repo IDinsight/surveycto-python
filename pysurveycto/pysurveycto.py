@@ -237,7 +237,8 @@ class SurveyCTOObject(object):
             Private function to return date for in required url format
 
         """
-        if (isinstance(oldest_completion_date, datetime.date)):
+        # Note a datetime.datetime is also a datetime.date but a datetime.date is not a datetime.datetime
+        if (not isinstance(oldest_completion_date, datetime.datetime)):
             # convert oldest_completion_date to required format
             oldest_completion_date = datetime.datetime.combine(oldest_completion_date,
                                                                datetime.datetime.min.time())
