@@ -71,7 +71,7 @@ Methods:
   -  **form\_id** *(str)*: The form\_id of the SurveyCTO form.
   -  **format** *(str, optional)*: The format of the returned data. Allowed values are: json, csv(default).
   -  **shape** *(str, optional)*: The shape of the returned data. Allowed values are: wide(default), long. shape=’long’ can only be specified when returning data in csv format.
-  -  **date** *(datetime.date or datetime.datetime object, optional)*: Return only the form submissions where CompletionDate is greater than the given date (in UTC). Can only be specified when returning data in json format.
+  -  **oldest_completion_date** *(datetime.date or datetime.datetime object, optional)*: Return only the form submissions where CompletionDate is greater than or equal to the given date (in UTC). Can only be specified when returning data in json format.
   -  **review\_status** *(list, optional)*: Return only the form submissions with given review status. Allowed values in the list are: approved(default), rejected, pending. This option is only applicable for forms using the “Review and Corrections” workflow on the SurveyCTO web console.
   -  **repeat\_groups** *(bool, optional)*: Return a dictionary object containing the main form data along with the repeat groups. Can only be specified when returning long data, in which case it will default to true.
   -  **line\_breaks** *(str, optional)*: Replace line breaks in the csv data with some other character.
@@ -130,6 +130,20 @@ Methods:
   -  **key** *(str, optional)*: The private key to decrypt an encrypted attachment in binary/string.
 
   *Returns:* The url content
+
+
+-  
+  .. code:: python
+
+   get_form_definition(form_id)
+
+  Fetch form's definition from SurveyCTO
+
+  *Parameters:*
+
+  -  **form\_id** *(str)*: The form\_id of the SurveyCTO form.
+
+  *Returns:* The form definition in JSON format
 
 
 Use Cases
@@ -191,6 +205,28 @@ Use Cases
       f = open(file_name, 'wb')   
       f.write(data)   
       f.close()
+
+-  Get form definition and save to excel file
+     .. code:: python
+    
+      data = scto.get_form_definition(form_id)
+      questions_df = pd.DataFrame(
+          json_data["fieldsRowsAndColumns"][1:],
+          columns=json_data["fieldsRowsAndColumns"][0],
+      )
+      choices_df = pd.DataFrame(
+          json_data["choicesRowsAndColumns"][1:],
+          columns=json_data["choicesRowsAndColumns"][0],
+      )
+      settings_df = pd.DataFrame(
+          json_data["settingsRowsAndColumns"][1:],
+          columns=json_data["settingsRowsAndColumns"][0],
+      )
+      writer = pd.ExcelWriter(file_name, engine="openpyxl")
+      questions_df.to_excel(writer, sheet_name="survey", index=False)
+      choices_df.to_excel(writer, sheet_name="choices", index=False)
+      settings_df.to_excel(writer, sheet_name="settings", index=False)
+      writer.save()
 
 License 
 =======
