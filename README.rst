@@ -211,16 +211,16 @@ Use Cases
     
       data = scto.get_form_definition(form_id)
       questions_df = pd.DataFrame(
-          json_data["fieldsRowsAndColumns"][1:],
-          columns=json_data["fieldsRowsAndColumns"][0],
+          data["fieldsRowsAndColumns"][1:],
+          columns=data["fieldsRowsAndColumns"][0],
       )
       choices_df = pd.DataFrame(
-          json_data["choicesRowsAndColumns"][1:],
-          columns=json_data["choicesRowsAndColumns"][0],
+          data["choicesRowsAndColumns"][1:],
+          columns=data["choicesRowsAndColumns"][0],
       )
       settings_df = pd.DataFrame(
-          json_data["settingsRowsAndColumns"][1:],
-          columns=json_data["settingsRowsAndColumns"][0],
+          data["settingsRowsAndColumns"][1:],
+          columns=data["settingsRowsAndColumns"][0],
       )
       writer = pd.ExcelWriter(file_name, engine="openpyxl")
       questions_df.to_excel(writer, sheet_name="survey", index=False)
