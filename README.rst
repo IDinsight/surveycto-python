@@ -135,7 +135,7 @@ Methods:
 -  
   .. code:: python
 
-   get_questionnaire_definition(form_id)
+   get_form_definition(form_id)
 
   Fetch form's definition from SurveyCTO
 
@@ -206,10 +206,10 @@ Use Cases
       f.write(data)   
       f.close()
 
--  Get questionnaire definition and save to excel file
+-  Get form definition and save to excel file
      .. code:: python
     
-      data = scto.get_questionnaire_definition(form_id)
+      data = scto.get_form_definition(form_id)
       questions_df = pd.DataFrame(
           json_data["fieldsRowsAndColumns"][1:],
           columns=json_data["fieldsRowsAndColumns"][0],

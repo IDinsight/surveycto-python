@@ -85,12 +85,12 @@ def test8(scto):
 
 def test9(scto):
 
-    data = scto.get_questionnaire_definition("phone_surveys_pilot_4")
+    data = scto.get_form_definition("phone_surveys_pilot_4")
     print(data.keys())
-    create_qdef_file(data)
+    create_form_def_file(data)
 
 
-def create_qdef_file(json_data):
+def create_form_def_file(json_data):
 
     questions_df = pd.DataFrame(
         json_data["fieldsRowsAndColumns"][1:],
@@ -105,7 +105,7 @@ def create_qdef_file(json_data):
         columns=json_data["settingsRowsAndColumns"][0],
     )
 
-    writer = pd.ExcelWriter("questionnaire_def.xlsx", engine="openpyxl")
+    writer = pd.ExcelWriter("form_def.xlsx", engine="openpyxl")
     questions_df.to_excel(writer, sheet_name="survey", index=False)
     choices_df.to_excel(writer, sheet_name="choices", index=False)
     settings_df.to_excel(writer, sheet_name="settings", index=False)

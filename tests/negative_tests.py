@@ -161,13 +161,13 @@ def line_breaks_test_1(scto):
     print(data_df.head(1))
 
 
-def wrong_form_id_qdef(scto):
+def wrong_form_id_form_def(scto):
     """
     requests.exceptions.HTTPError: 500 Server Error
 
     """
 
-    data = scto.get_questionnaire_definition("phone_surveys_pilo_4")
+    data = scto.get_form_definition("phone_surveys_pilo_4")
     print(data.keys())
 
 
@@ -193,4 +193,4 @@ if __name__ == "__main__":
     # repeat_groups_test_1(scto)
     # repeat_groups_test_2(scto)
     # line_breaks_test_1(scto)
-    # wrong_form_id_qdef(scto)
+    # wrong_form_id_form_def(scto)

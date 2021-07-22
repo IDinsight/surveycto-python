@@ -119,7 +119,7 @@ SurveyCTOObject(server_name,
       
 *
   ```python
-  get_questionnaire_definition(form_id)
+  get_form_definition(form_id)
   ```
   <p>Fetch form's definition from SurveyCTO
 
@@ -188,9 +188,9 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
   f.close()
   ```
 
-- Get questionnaire definition and save to excel file
+- Get form definition and save to excel file
   ```python
-  data = scto.get_questionnaire_definition(form_id)
+  data = scto.get_form_definition(form_id)
   questions_df = pd.DataFrame(
       json_data["fieldsRowsAndColumns"][1:],
       columns=json_data["fieldsRowsAndColumns"][0],

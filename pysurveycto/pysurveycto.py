@@ -630,10 +630,10 @@ class SurveyCTOObject(object):
 
         return data
 
-    def get_questionnaire_definition(self, form_id):
+    def get_form_definition(self, form_id):
 
         """
-        Fetch questionnaire definition from SurveyCTO
+        Fetch form definition from SurveyCTO
         :param form_id (str): The form_id of the SurveyCTO form.
 
         """
