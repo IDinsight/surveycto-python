@@ -336,7 +336,7 @@ class SurveyCTOObject(object):
         self.__check_key_and_raise(key)
 
     def __check_json_extraction_params(
-        self, shape, oldest_completion_date, review_status, repeat_groups, line_breaks
+        self, shape, oldest_completion_date, review_status, repeat_groups, line_breaks, key
     ):
         """
         Check parameters passed for json extraction
@@ -544,7 +544,7 @@ class SurveyCTOObject(object):
 
             # Check params
             self.__check_json_extraction_params(
-                shape, oldest_completion_date, review_status, repeat_groups, line_breaks
+                shape, oldest_completion_date, review_status, repeat_groups, line_breaks, key
             )
 
             data = self.__get_form_data_in_json_format(
