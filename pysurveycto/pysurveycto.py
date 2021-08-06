@@ -49,7 +49,7 @@ class SurveyCTOObject(object):
 
         # Defining both to be compatible with all SurveyCTO versions
         self.auth_basic = requests.auth.HTTPBasicAuth(username, password)
-        self.auth_disgest = requests.auth.HTTPDigestAuth(username, password)
+        self.auth_digest = requests.auth.HTTPDigestAuth(username, password)
         self.default_headers = {
             "X-OpenRosa-Version": "1.0",
         }
@@ -123,7 +123,7 @@ class SurveyCTOObject(object):
             except requests.exceptions.HTTPError as e:
                 try:
                     response = requests.post(
-                        v_settings, headers=self.default_headers, auth=self.auth_disgest
+                        v_settings, headers=self.default_headers, auth=self.auth_digest
                     )
                     response.raise_for_status()
                 except requests.exceptions.HTTPError as e:
@@ -141,7 +141,7 @@ class SurveyCTOObject(object):
             except requests.exceptions.HTTPError as e:
                 try:
                     response = requests.delete(
-                        v_settings, headers=self.default_headers, auth=self.auth_disgest
+                        v_settings, headers=self.default_headers, auth=self.auth_digest
                     )
                     response.raise_for_status()
                 except requests.exceptions.HTTPError as e:
@@ -170,7 +170,7 @@ class SurveyCTOObject(object):
                 try:
                     if key is False:
                         response = requests.get(
-                            url, headers=self.default_headers, auth=self.auth_disgest
+                            url, headers=self.default_headers, auth=self.auth_digest
                         )
                     else:
                         files = {"private_key": key}
@@ -178,7 +178,7 @@ class SurveyCTOObject(object):
                             url,
                             files=files,
                             headers=self.default_headers,
-                            auth=self.auth_disgest,
+                            auth=self.auth_digest,
                         )
 
                     response.raise_for_status()
