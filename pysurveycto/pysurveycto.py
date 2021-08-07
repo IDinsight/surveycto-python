@@ -49,7 +49,7 @@ class SurveyCTOObject(object):
 
         # Defining both to be compatible with all SurveyCTO versions
         self.auth_basic = requests.auth.HTTPBasicAuth(username, password)
-        self.auth_disgest = requests.auth.HTTPDigestAuth(username, password)
+        self.auth_digest = requests.auth.HTTPDigestAuth(username, password)
         self.default_headers = {
             "X-OpenRosa-Version": "1.0",
         }
@@ -123,7 +123,7 @@ class SurveyCTOObject(object):
             except requests.exceptions.HTTPError as e:
                 try:
                     response = requests.post(
-                        v_settings, headers=self.default_headers, auth=self.auth_disgest
+                        v_settings, headers=self.default_headers, auth=self.auth_digest
                     )
                     response.raise_for_status()
                 except requests.exceptions.HTTPError as e:
@@ -141,7 +141,7 @@ class SurveyCTOObject(object):
             except requests.exceptions.HTTPError as e:
                 try:
                     response = requests.delete(
-                        v_settings, headers=self.default_headers, auth=self.auth_disgest
+                        v_settings, headers=self.default_headers, auth=self.auth_digest
                     )
                     response.raise_for_status()
                 except requests.exceptions.HTTPError as e:
@@ -170,7 +170,7 @@ class SurveyCTOObject(object):
                 try:
                     if key is False:
                         response = requests.get(
-                            url, headers=self.default_headers, auth=self.auth_disgest
+                            url, headers=self.default_headers, auth=self.auth_digest
                         )
                     else:
                         files = {"private_key": key}
@@ -178,7 +178,7 @@ class SurveyCTOObject(object):
                             url,
                             files=files,
                             headers=self.default_headers,
-                            auth=self.auth_disgest,
+                            auth=self.auth_digest,
                         )
 
                     response.raise_for_status()
@@ -336,7 +336,7 @@ class SurveyCTOObject(object):
         self.__check_key_and_raise(key)
 
     def __check_json_extraction_params(
-        self, shape, oldest_completion_date, review_status, repeat_groups, line_breaks
+        self, shape, oldest_completion_date, review_status, repeat_groups, line_breaks, key
     ):
         """
         Check parameters passed for json extraction
@@ -544,7 +544,7 @@ class SurveyCTOObject(object):
 
             # Check params
             self.__check_json_extraction_params(
-                shape, oldest_completion_date, review_status, repeat_groups, line_breaks
+                shape, oldest_completion_date, review_status, repeat_groups, line_breaks, key
             )
 
             data = self.__get_form_data_in_json_format(
