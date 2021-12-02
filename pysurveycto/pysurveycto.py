@@ -264,8 +264,13 @@ class SurveyCTOObject(object):
             oldest_completion_date = datetime.datetime.combine(
                 oldest_completion_date, datetime.datetime.min.time()
             )
+        try:
+            date_string = oldest_completion_date.strftime("%b %-d, %Y %-I:%M:%S %p")
+        except ValueError as e:
+            # Except block added for Windows vs Unix format differences
+            date_string = oldest_completion_date.strftime("%b %#d, %Y %#I:%M:%S %p")
 
-        url_date = quote(oldest_completion_date.strftime("%b %-d, %Y %-I:%M:%S %p"))
+        url_date = quote(date_string)
 
         return url_date
 
@@ -336,7 +341,13 @@ class SurveyCTOObject(object):
         self.__check_key_and_raise(key)
 
     def __check_json_extraction_params(
-        self, shape, oldest_completion_date, review_status, repeat_groups, line_breaks, key
+        self,
+        shape,
+        oldest_completion_date,
+        review_status,
+        repeat_groups,
+        line_breaks,
+        key,
     ):
         """
         Check parameters passed for json extraction
@@ -544,7 +555,12 @@ class SurveyCTOObject(object):
 
             # Check params
             self.__check_json_extraction_params(
-                shape, oldest_completion_date, review_status, repeat_groups, line_breaks, key
+                shape,
+                oldest_completion_date,
+                review_status,
+                repeat_groups,
+                line_breaks,
+                key,
             )
 
             data = self.__get_form_data_in_json_format(
