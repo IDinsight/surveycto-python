@@ -130,6 +130,19 @@ SurveyCTOObject(server_name,
   </p>    
     
 
+*
+  ```python
+  get_deployed_form_version(form_id)
+  ```
+  <p>Fetch version of deployed form from SurveyCTO
+
+    *Parameters:*
+    - **form_id** *(str)*: The form_id of the SurveyCTO form.
+
+    *Returns:* The form version as a string
+  </p>    
+
+
 <a name="usecases"></a>
 # Use Cases
 
@@ -209,6 +222,11 @@ scto = pysurveycto.SurveyCTOObject(server_name, username, password)
   choices_df.to_excel(writer, sheet_name="choices", index=False)
   settings_df.to_excel(writer, sheet_name="settings", index=False)
   writer.save()
+  ```
+
+- Get form version
+  ```python
+  version = scto.get_deployed_form_version(form_id)
   ```
 
 

@@ -31,6 +31,22 @@ class NotImplementedError(ValueError):
     pass
 
 
+class FormNotFoundError(ValueError):
+    """
+    Class created to handle requests where the requested form can't be found
+    """
+
+    pass
+
+
+class FormVersionNotFoundError(ValueError):
+    """
+    Class created to handle form version requests where the version can't be found
+    """
+
+    pass
+
+
 class SurveyCTOObject(object):
     """
     Object to initialize and interact with a SurveyCTO server
@@ -164,7 +180,6 @@ class SurveyCTOObject(object):
 
         # except Exception as e:
         except requests.exceptions.HTTPError as e:
-
             if e.response.status_code == 401:
                 # Try digest authentication which works for old SurveyCTO versions
                 try:
@@ -184,7 +199,6 @@ class SurveyCTOObject(object):
                     response.raise_for_status()
 
                 except requests.exceptions.HTTPError as e:
-
                     response = False
                     self.__print_user_response(e)
                     raise e
@@ -366,7 +380,6 @@ class SurveyCTOObject(object):
 
         if (oldest_completion_date == 0) or (oldest_completion_date is None):
             if review_status is not None:
-
                 # Check params - review status
                 self.__check_review_status_and_raise(review_status)
 
@@ -420,7 +433,6 @@ class SurveyCTOObject(object):
         oldest_completion_date = None
 
         if shape == "wide":
-
             # repeat_groups not alowed in wide csv format
             repeat_groups = None
 
@@ -429,21 +441,17 @@ class SurveyCTOObject(object):
             return data
 
         else:
-
             if repeat_groups == False:
-
                 url = f"""https://{self.server_name}.surveycto.com/api/v1/forms/data/csv/{form_id}?r={url_review_status}"""
                 data = (self.get_url_data(url, line_breaks, key=key)).text
                 return data
 
             else:
-
                 # Default to returning all repeat groups in a dictionary
                 repeat_groups_dict = self.__get_repeat_groups(form_id)
 
                 data_dict = {}
                 for dict_key, dict_value in repeat_groups_dict.items():
-
                     url = dict_value + "?r=" + url_review_status
                     data = (self.get_url_data(url, line_breaks, key=key)).text
                     data_dict[dict_key] = data
@@ -477,7 +485,6 @@ class SurveyCTOObject(object):
 
             # check params
             if review_status is not None:
-
                 url_review_status = ",".join(review_status)
 
                 # If review status is specified, use V1 API with review status
@@ -488,7 +495,6 @@ class SurveyCTOObject(object):
                 url = f"""https://{self.server_name}.surveycto.com/api/v2/forms/data/{shape}/json/{form_id}?date={url_date}"""
 
         else:
-
             # review_status not allowed in json formats with date filter
             review_status = None
 
@@ -531,7 +537,6 @@ class SurveyCTOObject(object):
         """
 
         if format == "csv":
-
             if review_status is None:
                 review_status = ["approved"]
 
@@ -552,7 +557,6 @@ class SurveyCTOObject(object):
             return data
 
         elif format == "json":
-
             # Check params
             self.__check_json_extraction_params(
                 shape,
@@ -575,7 +579,6 @@ class SurveyCTOObject(object):
             return data
 
         else:
-
             raise NotImplementedError(
                 "Support for downloading data in '"
                 + format
@@ -647,7 +650,6 @@ class SurveyCTOObject(object):
         return data
 
     def get_form_definition(self, form_id):
-
         """
         Fetch form definition from SurveyCTO
         :param form_id (str): The form_id of the SurveyCTO form.
@@ -669,3 +671,35 @@ class SurveyCTOObject(object):
             raise e
 
         return response.json()
+
+    def get_deployed_form_version(self, form_id):
+        """
+        Fetch form version of the deployed form from SurveyCTO
+        :param form_id (str): The form_id of the SurveyCTO form.
+
+        """
+
+        headers = self.__auth()
+        url = f"https://{self.server_name}.surveycto.com/console/forms-groups-datasets/get"
+
+        try:
+            response = self._sesh.get(
+                url,
+                cookies=self._sesh.cookies,
+                headers=headers,
+            )
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            response = False
+            raise e
+
+        forms = response.json()["forms"]
+
+        form = [form for form in forms if form["id"] == form_id]
+        if len(form) == 0:
+            raise FormNotFoundError("Requested form could not be found on the server")
+
+        if "version" not in form[0].keys():
+            raise FormVersionNotFoundError("Version not found for the requested form")
+
+        return form[0]["version"]
