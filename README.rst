@@ -146,6 +146,20 @@ Methods:
   *Returns:* The form definition in JSON format
 
 
+-  
+  .. code:: python
+
+   get_deployed_form_version(form_id)
+
+  Fetch version of deployed form from SurveyCTO
+
+  *Parameters:*
+
+  -  **form\_id** *(str)*: The form\_id of the SurveyCTO form.
+
+  *Returns:* The form version as a string
+
+
 Use Cases
 =========
 
@@ -227,6 +241,11 @@ Use Cases
       choices_df.to_excel(writer, sheet_name="choices", index=False)
       settings_df.to_excel(writer, sheet_name="settings", index=False)
       writer.save()
+
+-  Get form version
+     .. code:: python
+    
+      version = scto.get_deployed_form_version(form_id)
 
 License 
 =======
