@@ -90,6 +90,10 @@ def test9(scto):
     create_form_def_file(data)
 
 
+def test10(scto):
+    data = scto.get_deployed_form_version("phone_surveys_pilot_4")
+    print(data)
+
 def create_form_def_file(json_data):
 
     questions_df = pd.DataFrame(
@@ -123,4 +127,4 @@ if __name__ == "__main__":
         v_scto_config["password"],
     )
 
-    test9(scto)
+    test10(scto)
