@@ -160,6 +160,19 @@ Methods:
   *Returns:* The form version as a string
 
 
+-
+  .. code:: python
+  
+   list_forms()
+  
+  Fetch all form_id's available in your SurveyCTO server
+
+  *Parameters:*
+  -  **None**
+
+  *Returns:* list of dictionaries, each dictionary containing information for each form on server   
+
+
 Use Cases
 =========
 
