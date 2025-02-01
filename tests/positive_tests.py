@@ -115,16 +115,19 @@ def create_form_def_file(json_data):
     settings_df.to_excel(writer, sheet_name="settings", index=False)
     writer.save()
 
+def test11(scto):
+    data = scto.list_forms()
+    print(data)
 
 if __name__ == "__main__":
-    v_config = configparser.ConfigParser()
-    v_config.read("./config.cfg")
-    v_scto_config = v_config["surveycto-dod"]
+    config = configparser.ConfigParser()
+    config.read("./config.cfg")
+    scto_config = config["surveycto-dod"]
 
     scto = pysurveycto.SurveyCTOObject(
-        v_scto_config["servername"],
-        v_scto_config["username"],
-        v_scto_config["password"],
+        scto_config["servername"],
+        scto_config["username"],
+        scto_config["password"],
     )
 
-    test10(scto)
+    test11(scto)
