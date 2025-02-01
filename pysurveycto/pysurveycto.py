@@ -703,3 +703,24 @@ class SurveyCTOObject(object):
             raise FormVersionNotFoundError("Version not found for the requested form")
 
         return form[0]["version"]
+    
+    def list_forms(self):
+        """
+        Fetches a list of dictionaries, with all live forms on server. Includes only the most recent versions.
+        :return: list of dictionaries, with each dictionary containing information for each form on server
+        """
+        headers = self.__auth()
+        url = f"https://{self.server_name}.surveycto.com/console/forms-groups-datasets/get"
+
+        try:
+            response = self._sesh.get(
+                url,
+                cookies=self._sesh.cookies,
+                headers=headers,
+            )
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            response = False
+            raise e
+        
+        return response.json()['forms']

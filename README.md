@@ -143,6 +143,19 @@ SurveyCTOObject(server_name,
   </p>    
 
 
+*
+  ```python
+  list_forms()
+  ```
+  <p>Fetch all form_id's available in your SurveyCTO server
+
+    *Parameters:*
+    - None
+
+    *Returns:* list of dictionaries, each dictionary containing information for each form on server
+  </p>    
+
+
 <a name="usecases"></a>
 # Use Cases
 
